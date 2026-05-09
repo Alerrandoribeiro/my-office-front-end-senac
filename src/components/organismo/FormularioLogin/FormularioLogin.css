@@ -1,0 +1,100 @@
+/* FORMULÁRIO */
+
+.formulario-login_root {
+  width: 100%;
+  max-width: 500px;
+
+  padding: 40px 32px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 28px;
+
+  background-color: rgba(255, 255, 255, 0.95);
+
+  border-radius: 32px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.formulario-login_titulo {
+  font-size: 36px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+.formulario-login_campos {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.input-com-label_root {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  box-sizing: border-box;
+}
+
+.input-com-label_label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.input-texto_root {
+  width: 100%;
+
+  height: 50px;
+
+  padding: 0 14px;
+
+  border: 1px solid #b8c0cc;
+
+  border-radius: 14px;
+
+  outline: none;
+
+  font-size: 15px;
+
+  box-sizing: border-box;
+}
+
+.input-texto_root:focus {
+  border-color: var(--cor-primaria);
+}
+
+.formulario-login_cadastro {
+  text-align: center;
+
+  font-size: 14px;
+
+  color: var(--cor-cinza);
+}
+
+.formulario-login_cadastro span {
+  color: var(--cor-primaria);
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.formulario-login_cadastro span:hover {
+  filter: brightness(0.8);
+}

@@ -1,0 +1,87 @@
+.formulario-cadastro_root {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 40px 32px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 28px;
+
+  background-color: rgba(255, 255, 255, 0.95);
+
+  border-radius: 32px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+
+  transition: transform 0.3s;
+}
+
+.formulario-cadastro_root:hover {
+  transform: translateY(-2px);
+}
+
+.formulario-cadastro_titulo {
+  font-size: 36px;
+  font-weight: 700;
+
+  text-align: center;
+
+  color: var(--cor-texto-escuro);
+}
+
+.formulario-cadastro_campos {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.formulario-cadastro_login {
+  text-align: center;
+
+  font-size: 14px;
+
+  color: var(--cor-cinza);
+}
+
+.formulario-cadastro_login span {
+  color: var(--cor-primaria);
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.formulario-cadastro_login span:hover {
+  filter: brightness(0.8);
+}
+
+@media (max-width: 768px) {
+  .formulario-cadastro_root {
+    max-width: 90%;
+
+    padding: 32px 24px;
+
+    border-radius: 24px;
+  }
+
+  .formulario-cadastro_titulo {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formulario-cadastro_root {
+    padding: 24px 20px;
+  }
+
+  .formulario-cadastro_titulo {
+    font-size: 26px;
+  }
+}
