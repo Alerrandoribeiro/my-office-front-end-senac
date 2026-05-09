@@ -1,0 +1,35 @@
+.input-data_root {
+  padding: 0 16px;
+
+  border-radius: 16px;
+
+  border: 2px solid transparent;
+
+  outline: none;
+
+  font-size: 16px;
+
+  transition: 0.3s;
+
+  cursor: pointer;
+}
+
+.input-data_root::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.input-data_padrao {
+  border-color: var(--cor-cinza);
+}
+
+.input-data_primario {
+  border-color: var(--cor-primaria);
+}
+
+.input-data_erro {
+  border-color: var(--cor-erro);
+}
+
+.input-data_root:focus {
+  filter: brightness(0.95);
+}
