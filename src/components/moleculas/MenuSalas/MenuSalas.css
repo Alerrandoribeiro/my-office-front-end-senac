@@ -1,0 +1,45 @@
+.menu-salas_root {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.menu-salas_item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 16px;
+
+  border: none;
+  border-radius: 16px;
+
+  background-color: #f5f5f5;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.menu-salas_item:hover {
+  filter: brightness(0.95);
+}
+
+.menu-salas_item-ativo {
+  background-color: var(--cor-primaria);
+
+  color: white;
+}
+
+.menu-salas_info {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 16px;
+  font-weight: 600;
+}
