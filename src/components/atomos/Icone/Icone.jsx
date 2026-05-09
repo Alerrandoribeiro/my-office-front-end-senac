@@ -1,10 +1,27 @@
-import React from 'react'
-import './Icone.css'
+import "./Icone.css";
 
-const Icone = () => {
+const Icone = ({
+  icone,
+  tamanho,
+  cor,
+  aoClicar,
+  largura,
+  altura,
+}) => {
   return (
-    <div>Icone</div>
-  )
-}
+    <span
+      className="icone_root"
+      onClick={aoClicar}
+      style={{
+        fontSize: tamanho,
+        color: cor,
+        width: largura,
+        height: altura,
+      }}
+    >
+      {icone}
+    </span>
+  );
+};
 
-export default Icone
+export default Icone;
