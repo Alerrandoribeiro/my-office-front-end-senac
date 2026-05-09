@@ -1,0 +1,25 @@
+.input-com-label_root {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.input-com-label_label {
+  font-size: 14px;
+  font-weight: 600;
+
+  color: var(--cor-texto-escuro);
+}
+
+.input-com-label_obrigatorio {
+  color: var(--cor-erro);
+
+  margin-left: 4px;
+}
+
+.input-com-label_erro {
+  font-size: 13px;
+
+  color: var(--cor-erro);
+}
