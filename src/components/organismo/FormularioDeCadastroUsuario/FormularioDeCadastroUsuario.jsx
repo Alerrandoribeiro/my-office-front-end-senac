@@ -1,12 +1,9 @@
 import { useState } from "react";
-
 import { MdPersonAdd } from "react-icons/md";
-
 import "./FormularioDeCadastroUsuario.css";
+
 import InputComLabel from "../../moleculas/InputComLabel/InputComLabel";
 import Botao from "../../atomos/Botao/Botao";
-
-
 
 const FormularioDeCadastroUsuario = () => {
   const [nome, setNome] = useState("");
@@ -16,6 +13,7 @@ const FormularioDeCadastroUsuario = () => {
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
   const fazerCadastro = () => {
+    // Vou adicionar a lógica para cadastrar o usuário aqui, mas por enquanto só vou mostrar os dados no console
     console.log({
       nome,
       telefone,
@@ -27,18 +25,14 @@ const FormularioDeCadastroUsuario = () => {
 
   return (
     <div className="formulario-cadastro_root">
-      <h1 className="formulario-cadastro_titulo">
-        Cadastro
-      </h1>
+      <h1 className="formulario-cadastro_titulo">Cadastro</h1>
 
       <div className="formulario-cadastro_campos">
         <InputComLabel
           label="Nome"
           placeholder="Digite seu nome"
           valor={nome}
-          aoAlterar={(e) =>
-            setNome(e.target.value)
-          }
+          aoAlterar={(e) => setNome(e.target.value)}
           largura="100%"
         />
 
@@ -47,9 +41,7 @@ const FormularioDeCadastroUsuario = () => {
           tipo="tel"
           placeholder="Digite seu telefone"
           valor={telefone}
-          aoAlterar={(e) =>
-            setTelefone(e.target.value)
-          }
+          aoAlterar={(e) => setTelefone(e.target.value)}
           largura="100%"
         />
 
@@ -58,9 +50,7 @@ const FormularioDeCadastroUsuario = () => {
           tipo="email"
           placeholder="Digite seu email"
           valor={email}
-          aoAlterar={(e) =>
-            setEmail(e.target.value)
-          }
+          aoAlterar={(e) => setEmail(e.target.value)}
           largura="100%"
         />
 
@@ -69,9 +59,7 @@ const FormularioDeCadastroUsuario = () => {
           tipo="password"
           placeholder="Digite sua senha"
           valor={senha}
-          aoAlterar={(e) =>
-            setSenha(e.target.value)
-          }
+          aoAlterar={(e) => setSenha(e.target.value)}
           largura="100%"
         />
 
@@ -80,9 +68,7 @@ const FormularioDeCadastroUsuario = () => {
           tipo="password"
           placeholder="Confirme sua senha"
           valor={confirmarSenha}
-          aoAlterar={(e) =>
-            setConfirmarSenha(e.target.value)
-          }
+          aoAlterar={(e) => setConfirmarSenha(e.target.value)}
           largura="100%"
         />
       </div>
@@ -104,4 +90,4 @@ const FormularioDeCadastroUsuario = () => {
   );
 };
 
-export default FormularioDeCadastroUsuario;;
+export default FormularioDeCadastroUsuario;
