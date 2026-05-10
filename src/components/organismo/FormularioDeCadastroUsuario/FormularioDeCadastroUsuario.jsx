@@ -38,7 +38,7 @@ const FormularioDeCadastroUsuario = () => {
   };
 
   const erroSenha = () => {
-    if (!senha) return "Campo obrigatório";
+    if (!senha) return "Campo obrigatório!";
     if (!senhaForte(senha)) return "A senha deve ter no mínimo 8 caracteres.";
     return "";
   };
@@ -50,7 +50,7 @@ const FormularioDeCadastroUsuario = () => {
   };
 
   const fazerCadastro = () => {
-   
+    // Vou adicionar a lógica de cadastro, para enviar os dados para o servidor
     console.log({
       nome,
       telefone,

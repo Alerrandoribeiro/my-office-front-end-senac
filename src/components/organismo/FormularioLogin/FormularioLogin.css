@@ -1,5 +1,3 @@
-/* FORMULÁRIO */
-
 .formulario-login_root {
   width: 100%;
   max-width: 500px;
@@ -53,7 +51,6 @@
   font-size: 14px;
   font-weight: 600;
 }
-
 
 .input-texto_root {
   width: 100%;
