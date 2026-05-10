@@ -3,12 +3,13 @@ import "./Botao.css";
 const Botao = ({
   cor,
   aoClicar,
+  aoAlterar,
   children,
   texto,
   icone,
-  onChange,
   largura,
   altura,
+  desabilitado = false,
 }) => {
   const estilos = ["botao-customizado_root"];
 
@@ -31,8 +32,9 @@ const Botao = ({
     <button
       className={estilos.join(" ")}
       onClick={aoClicar}
-      onChange={onChange}
+      onChange={aoAlterar}
       style={{ width: largura, height: altura }}
+      disabled={desabilitado}
     >
       {texto}
       {icone && <span className="botao-customizado_icone">{icone}</span>}
