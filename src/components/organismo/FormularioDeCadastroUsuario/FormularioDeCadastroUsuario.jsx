@@ -12,6 +12,7 @@ import {
   telefoneValido,
   senhasIguais,
 } from "../../utils/validarFormulario";
+import { cadastrarUsuario } from "../../../service/usuarioService";
 
 const FormularioDeCadastroUsuario = () => {
   const [nome, setNome] = useState("");
@@ -19,6 +20,14 @@ const FormularioDeCadastroUsuario = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
+
+  const limparCampos = () => {
+    setNome("");
+    setTelefone("");
+    setEmail("");
+    setSenha("");
+    setConfirmarSenha("");
+  };
 
   const erroNome = () => {
     if (!nome) return "Campo obrigatório!";
@@ -49,17 +58,28 @@ const FormularioDeCadastroUsuario = () => {
     return "";
   };
 
-  const fazerCadastro = () => {
-    // Vou adicionar a lógica de cadastro, para enviar os dados para o servidor
-    console.log({
-      nome,
-      telefone,
-      email,
-      senha,
-      confirmarSenha,
-    });
+  const fazerCadastro = async () => {
+    try {
+      const usuario = {
+        nome,
+        telefone,
+        email,
+        senha,
+      };
 
-    alert("Cadastro realizado com sucesso!");
+      const resposta = await cadastrarUsuario(usuario);
+
+      console.log(resposta);
+
+      alert("Cadastro realizado com sucesso!");
+
+      limparCampos();
+
+    } catch (error) {
+      console.error(error);
+
+      alert("Erro ao cadastrar usuário!");
+    }
   };
 
   const botaoDesabilitado =
