@@ -1,9 +1,16 @@
 import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+
 import "./FormularioDeCadastroDeSala.css";
 
 import InputComLabel from "../../moleculas/InputComLabel/InputComLabel";
 import Botao from "../../atomos/Botao/Botao";
-import { MASCARA_CEP, formatarComMascara } from "../../utils/mascaras";
+
+import {
+    MASCARA_CEP,
+    formatarComMascara
+} from "../../utils/mascaras";
 
 const FormularioDeCadastroDeSala = () => {
     const [cep, setCep] = useState("");
@@ -40,6 +47,30 @@ const FormularioDeCadastroDeSala = () => {
         return !campo ? "Campo obrigatório!" : "";
     };
 
+    const buscarCep = async (valorCep) => {
+        const cepSemMascara = valorCep.replace(/\D/g, "");
+
+        if (cepSemMascara.length !== 8) return;
+
+        try {
+            const resp = await axios.get(
+                `https://brasilapi.com.br/api/cep/v2/${cepSemMascara}`
+            );
+
+            setRua(resp.data.street || "");
+            setBairro(resp.data.neighborhood || "");
+            setCidade(resp.data.city || "");
+            setEstado(resp.data.state || "");
+            setLatitude(resp.data.location?.coordinates?.latitude || "",);
+            setLongitude(resp.data.location?.coordinates?.longitude || "");
+
+            toast.success("Endereço encontrado!");
+        } catch (error) {
+            toast.error("CEP não encontrado.");
+            console.error(error);
+        }
+    };
+
     const fazerCadastroSala = () => {
         console.log({
             cep,
@@ -57,7 +88,8 @@ const FormularioDeCadastroDeSala = () => {
             longitude
         });
 
-        alert("Cadastro realizado com sucesso!");
+        toast.success("Cadastro realizado com sucesso!");
+
         limparCampos();
     };
 
@@ -72,12 +104,11 @@ const FormularioDeCadastroDeSala = () => {
         !capacidade ||
         !tipoSala ||
         !descricao ||
-        !imagem ||
-        !latitude ||
-        !longitude;
+        !imagem;
 
     return (
         <div className="formulario-cadastro-sala_root">
+
             <h1 className="formulario-cadastro-sala_titulo">
                 Cadastro de Sala
             </h1>
@@ -88,7 +119,16 @@ const FormularioDeCadastroDeSala = () => {
                     label="CEP"
                     placeholder="Informe o CEP"
                     valor={cep}
-                    aoAlterar={(e) => setCep(formatarComMascara(e.target.value, MASCARA_CEP))}
+                    aoAlterar={(e) => {
+                        const valorFormatado = formatarComMascara(
+                            e.target.value,
+                            MASCARA_CEP
+                        );
+
+                        setCep(valorFormatado);
+
+                        buscarCep(valorFormatado);
+                    }}
                     largura="100%"
                     mensagemErro={erroDeObrigatoriedade(cep)}
                 />
@@ -182,6 +222,7 @@ const FormularioDeCadastroDeSala = () => {
                     largura="100%"
                     mensagemErro={erroDeObrigatoriedade(imagem)}
                 />
+
             </div>
 
             <div className="formulario-cadastro-sala_botao">
@@ -194,6 +235,7 @@ const FormularioDeCadastroDeSala = () => {
                     desabilitado={botaoDesabilitado}
                 />
             </div>
+
         </div>
     );
 };
