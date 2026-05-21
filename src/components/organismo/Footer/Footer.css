@@ -1,0 +1,151 @@
+.footer {
+  width: 100%;
+  margin-top: 40px;
+  padding: 35px 20px 18px;
+
+  background: var(--cor-primaria-escura);
+  color: var(--cor-texto-claro);
+}
+
+.footer-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 30px;
+  text-align: center;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.footer-column h3 {
+  font-size: 17px;
+}
+
+.footer-column p,
+.footer-column a {
+  font-size: 14px;
+
+  color: var(--cor-secundaria-clara);
+}
+
+.footer-column ul {
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  padding: 0;
+}
+
+.footer-column a {
+  text-decoration: none;
+
+  transition: 0.3s;
+}
+
+.footer-column a:hover {
+  color: var(--cor-texto-claro);
+}
+
+.newsletter-form {
+  display: flex;
+
+  gap: 8px;
+}
+
+.newsletter-form input,
+.newsletter-form button {
+  padding: 10px;
+
+  border: none;
+  border-radius: 8px;
+
+  font-size: 14px;
+}
+
+.newsletter-form input {
+  width: 100%;
+  max-width: 180px;
+
+  outline: none;
+}
+
+.newsletter-form button {
+  background: var(--cor-primaria);
+
+  color: var(--cor-texto-claro);
+
+  cursor: pointer;
+}
+
+.social-icons {
+  display: flex;
+
+  gap: 10px;
+}
+
+.social-icons a {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.social-icons img {
+  width: 18px;
+}
+
+.footer-divider {
+  height: 1px;
+
+  margin: 25px 0 15px;
+
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom {
+  text-align: center;
+}
+
+.footer-bottom p {
+  font-size: 13px;
+
+  color: var(--cor-secundaria-clara);
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .newsletter-form input,
+  .newsletter-form button {
+    width: 100%;
+    max-width: 220px;
+  }
+}
+
