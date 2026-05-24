@@ -26,20 +26,23 @@ const InputTexto = ({
       break;
   }
 
-  return (
-    <input
-      className={estilos.join(" ")}
-      type={tipo}
-      value={valor}
-      placeholder={placeholder}
-      onChange={aoAlterar}
-      disabled={desabilitado}
-      style={{
-        width: largura,
-        height: altura,
-      }}
-    />
-  );
+  const inputProps = {
+    className: estilos.join(" "),
+    type: tipo,
+    placeholder,
+    onChange: aoAlterar,
+    disabled: desabilitado,
+    style: {
+      width: largura,
+      height: altura,
+    },
+  };
+
+  if (tipo !== "file") {
+    inputProps.value = valor;
+  }
+
+  return <input {...inputProps} />;
 };
 
 export default InputTexto;

@@ -1,56 +1,178 @@
 .formulario-cadastro-sala_root {
     width: 100%;
-    max-width: 720px;
-
-    margin: 24px auto;
-    padding: 28px;
+    max-width: 1280px;
+    margin: 32px auto;
+    padding: 32px;
 
     background: #ffffff;
-
-    border: 1px solid #e5e7eb;
-    border-radius: 20px;
-
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 28px;
+    box-shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
 
     display: flex;
     flex-direction: column;
-    gap: 24px;
-
+    gap: 32px;
     font-family: "Segoe UI", sans-serif;
+}
+
+.formulario-cadastro-sala_header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formulario-cadastro-sala_badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.14);
+    color: #166534;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
 }
 
 .formulario-cadastro-sala_titulo {
     margin: 0;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+}
 
-    font-size: 28px;
-    font-weight: 700;
+.formulario-cadastro-sala_subtitulo {
+    margin: 0;
+    max-width: 680px;
+    color: #475569;
+    line-height: 1.75;
+}
 
-    color: #111827;
+.formulario-cadastro-sala_grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.9fr);
+    gap: 48px;
+    align-items: start;
+    padding-right: 8px;
+}
 
-    text-align: center;
+.formulario-cadastro-sala_grid > * {
+    min-width: 0;
+}
+
+.formulario-cadastro-sala_formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.card-sala_root {
+    min-width: 0;
 }
 
 .formulario-cadastro-sala_campos {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
 
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+.formulario-cadastro-sala_campos > div {
+    min-width: 0;
+}
 
+.formulario-cadastro-sala_upload {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upload-label-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+}
+
+.upload-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.upload-note {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.upload-input-box {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
     gap: 16px;
+    width: 100%;
+    min-height: 70px;
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: #f8fafc;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    cursor: pointer;
+}
+
+.upload-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #22c55e 0%, #2563eb 100%);
+    color: #ffffff;
+    font-weight: 700;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.upload-input-box:hover .upload-button {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+}
+
+.upload-filename {
+    color: #475569;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.upload-error {
+    font-size: 13px;
+    color: #dc2626;
 }
 
 .formulario-cadastro-sala_campos input,
 .formulario-cadastro-sala_campos textarea {
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .formulario-cadastro-sala_campos input:focus,
 .formulario-cadastro-sala_campos textarea:focus {
     border-color: #2563eb;
-
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
 }
 
 .formulario-cadastro-sala_botao {
@@ -58,40 +180,42 @@
 }
 
 .formulario-cadastro-sala_botao button {
-    border-radius: 14px !important;
-
+    border-radius: 16px !important;
     font-size: 15px;
-    font-weight: 600;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    font-weight: 700;
+    padding: 0 22px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .formulario-cadastro-sala_botao button:hover:not(:disabled) {
     transform: translateY(-1px);
-
-    box-shadow:
-        0 6px 16px rgba(37, 99, 235, 0.18);
+    box-shadow: 0 16px 32px rgba(37, 99, 235, 0.18);
 }
 
 .formulario-cadastro-sala_botao button:disabled {
-    opacity: 0.6;
-
+    opacity: 0.7;
     cursor: not-allowed;
 }
 
-@media (max-width: 768px) {
-    .formulario-cadastro-sala_root {
-        padding: 20px;
-        margin: 16px;
+@media (max-width: 1024px) {
+    .formulario-cadastro-sala_grid {
+        grid-template-columns: 1fr;
     }
 
     .formulario-cadastro-sala_campos {
         grid-template-columns: 1fr;
     }
+}
+
+@media (max-width: 640px) {
+    .formulario-cadastro-sala_root {
+        padding: 20px;
+        margin: 18px;
+    }
 
     .formulario-cadastro-sala_titulo {
-        font-size: 24px;
+        font-size: 28px;
     }
 }
+
+
