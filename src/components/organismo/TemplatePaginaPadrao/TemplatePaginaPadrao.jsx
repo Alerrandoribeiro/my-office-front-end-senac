@@ -1,11 +1,10 @@
 import React from 'react'
 import Footer from '../Footer/Footer';
-import AppBar from '../AppBar/AppBar';
 
-const TemplatePaginaPadrao = ({children}) => {
+const TemplatePaginaPadrao = ({children, appbar}) => {
     return (
         <div>
-          <AppBar/>
+          {appbar}
     
           <main
             style={{

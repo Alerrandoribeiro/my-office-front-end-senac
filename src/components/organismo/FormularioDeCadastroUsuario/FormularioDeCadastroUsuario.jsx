@@ -13,8 +13,12 @@ import {
   senhasIguais,
 } from "../../utils/validarFormulario";
 import { cadastrarUsuario } from "../../../service/usuarioService";
+import { useNavigate } from "react-router-dom";
 
 const FormularioDeCadastroUsuario = () => {
+
+  const navigate = useNavigate();
+
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
@@ -162,7 +166,7 @@ const FormularioDeCadastroUsuario = () => {
 
       <p className="formulario-cadastro_login">
         Já possui uma conta?
-        <span> Entrar</span>
+        <span onClick={() => navigate("/login")} > Entrar</span>
       </p>
     </div>
   );

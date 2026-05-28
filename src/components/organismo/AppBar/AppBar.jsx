@@ -1,52 +1,28 @@
 import "./AppBar.css";
 
-import { FaHome, FaUser, FaCalendarCheck } from "react-icons/fa";
-import { MdMeetingRoom } from "react-icons/md";
-import { IoLogOut } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
-import Botao from "../../atomos/Botao/Botao";
-
-const AppBar = () => {
+const AppBar = ({ logo, links = [], actions }) => {
   return (
     <header className="appbar">
       <div className="appbar-container">
 
-        <a href="/" className="logo">
-          MyOffice
-        </a>
+        <Link to={logo.to} className="logo">
+          {logo.texto}
+        </Link>
 
         <nav className="nav-links">
-
-          <a href="/">
-            <FaHome />
-            <span>Início</span>
-          </a>
-
-          <a href="/">
-            <MdMeetingRoom />
-            <span>Minhas Salas</span>
-          </a>
-
-          <a href="/">
-            <FaCalendarCheck />
-            <span>Reservas</span>
-          </a>
-
-          <a href="/">
-            <FaUser />
-            <span>Meu Cadastro</span>
-          </a>
-
+          {links.map((link, index) => (
+            <Link key={index} to={link.to}>
+              {link.icone}
+              <span>{link.texto}</span>
+            </Link>
+          ))}
         </nav>
 
         <div className="appbar-actions">
-  <Botao
-    cor="primaria"
-    altura={10}
-    texto={"Sair"}
-    icone={<IoLogOut />}
-  />
-</div>
+          {actions}
+        </div>
 
       </div>
     </header>

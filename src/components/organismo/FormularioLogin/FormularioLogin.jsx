@@ -11,8 +11,12 @@ import {
   emailValido,
   senhaForte,
 } from "../../utils/validarFormulario";
+import { useNavigate } from "react-router-dom";
 
 const FormularioLogin = () => {
+
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -91,7 +95,7 @@ const FormularioLogin = () => {
 
       <p className="formulario-login_cadastro">
         Não tem uma conta?
-        <span> Cadastre-se</span>
+        <span onClick={() => navigate("/cadastro-usuario")} > Cadastre-se</span>
       </p>
     </div>
   );
