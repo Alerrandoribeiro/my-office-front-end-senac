@@ -2,6 +2,7 @@ import React from "react";
 
 import TemplatePaginaPadrao from "../../TemplatePaginaPadrao/TemplatePaginaPadrao";
 import AppBar from "../../AppBar/AppBar";
+import "./PaginaInicial.css";
 
 import { FaHome } from "react-icons/fa";
 import { MdMeetingRoom } from "react-icons/md";
@@ -60,7 +61,9 @@ const PaginaInicial = ({ children }) => {
           />
         }
       >
-        {children}
+        <div className="pagina-inicial_conteudo">
+          {children}
+        </div>
       </TemplatePaginaPadrao>
     );
   };

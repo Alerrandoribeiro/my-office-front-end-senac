@@ -5,9 +5,9 @@ import PaginaInicial from '../PaginaInicial/PaginaInicial'
 const PaginaLogin = () => {
   return (
     <PaginaInicial>
-        <FormularioLogin/>
+      <FormularioLogin />
     </PaginaInicial>
-  )
+  );
 }
 
 export default PaginaLogin

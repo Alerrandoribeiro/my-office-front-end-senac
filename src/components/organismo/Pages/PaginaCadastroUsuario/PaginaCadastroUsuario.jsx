@@ -5,9 +5,9 @@ import FormularioDeCadastroUsuario from '../../FormularioDeCadastroUsuario/Formu
 const PaginaCadastroUsuario = () => {
   return (
     <PaginaInicial>
-        <FormularioDeCadastroUsuario/>
+      <FormularioDeCadastroUsuario />
     </PaginaInicial>
-  )
+  );
 }
 
 export default PaginaCadastroUsuario
