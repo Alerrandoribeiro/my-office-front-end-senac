@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import TemplatePaginaPadrao from "../../TemplatePaginaPadrao/TemplatePaginaPadrao";
 import AppBar from "../../AppBar/AppBar";
@@ -13,9 +13,21 @@ import Botao from "../../../atomos/Botao/Botao";
 
 import { useNavigate } from "react-router-dom";
 import Pesquisar from "../../../moleculas/Pesquisar/Pesquisar";
+import { obterUsuarioLogado, removerUsuarioLogado } from "../../../utils/auth";
 
 const PaginaInicial = ({ children }) => {
     const navigate = useNavigate();
+    const [usuario, setUsuario] = useState(null);
+
+    useEffect(() => {
+      setUsuario(obterUsuarioLogado());
+    }, []);
+
+    const handleLogout = () => {
+      removerUsuarioLogado();
+      setUsuario(null);
+      navigate("/");
+    };
   
     return (
       <TemplatePaginaPadrao
@@ -48,15 +60,27 @@ const PaginaInicial = ({ children }) => {
               }
             ]}
             actions={
-              <Botao
-                texto="Login"
-                cor="primaria"
-                altura={35}
-                largura={80}
-                arredondamento={12}
-                tamanhoFonte={15}
-                aoClicar={() => navigate("/login")}
-              />
+              usuario ? (
+                <Botao
+                  texto="Sair"
+                  cor="erro"
+                  altura={35}
+                  largura={80}
+                  arredondamento={12}
+                  tamanhoFonte={15}
+                  aoClicar={handleLogout}
+                />
+              ) : (
+                <Botao
+                  texto="Login"
+                  cor="primaria"
+                  altura={35}
+                  largura={80}
+                  arredondamento={12}
+                  tamanhoFonte={15}
+                  aoClicar={() => navigate("/login")}
+                />
+              )
             }
           />
         }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { MdLogin } from "react-icons/md";
 
@@ -11,6 +11,7 @@ import {
   emailValido,
   senhaForte,
 } from "../../utils/validarFormulario";
+import { salvarUsuarioLogado, obterUsuarioLogado } from "../../utils/auth";
 import { useNavigate } from "react-router-dom";
 
 const FormularioLogin = () => {
@@ -19,6 +20,13 @@ const FormularioLogin = () => {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  useEffect(() => {
+    const usuario = obterUsuarioLogado();
+    if (usuario) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const erroEmail = () => {
     if (campoVazio(email)) {
@@ -43,13 +51,15 @@ const FormularioLogin = () => {
   };
 
   const fazerLogin = () => {
-    // Aqui você pode adicionar a lógica de autenticação, como enviar os dados para um servidor
-    console.log({
+    const usuarioLogado = {
       email,
-      senha,
-    });
+      loginEm: new Date().toISOString(),
+    };
+
+    salvarUsuarioLogado(usuarioLogado);
 
     alert("Login realizado com sucesso!");
+    navigate("/");
   };
 
   const botaoDesabilitado =
