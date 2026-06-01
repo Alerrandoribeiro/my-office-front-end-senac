@@ -1,0 +1,26 @@
+.pagina-todas-salas_root {
+    width: 100%;
+    max-width: 1600px;
+    margin: 15px auto;
+    padding: 0 24px;
+}
+
+.salas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    width: 100%;
+    margin-top: 32px;
+}
+
+@media (max-width: 1200px) {
+    .salas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .salas-grid {
+        grid-template-columns: 1fr;
+    }
+}

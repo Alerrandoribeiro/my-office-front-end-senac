@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   MdMeetingRoom,
   MdKeyboardArrowRight,
@@ -7,26 +7,48 @@ import {
 import "./MenuSalas.css";
 
 const MenuSalas = ({
-  salas = [],
   salaSelecionada,
   aoSelecionar,
 }) => {
+  const [salas, setSalas] = useState([]);
+
+  useEffect(() => {
+    const buscarSalas = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/salas"
+        );
+
+        const data = await response.json();
+
+        setSalas(data);
+      } catch (error) {
+        console.error("Erro ao buscar salas:", error);
+      }
+    };
+
+    buscarSalas();
+  }, []);
+
   return (
     <div className="menu-salas_root">
       {salas.map((sala) => (
         <button
-          key={sala.id}
+          key={sala.idSala}
           className={`menu-salas_item ${
-            salaSelecionada === sala.id
+            salaSelecionada === sala.idSala
               ? "menu-salas_item-ativo"
               : ""
           }`}
           onClick={() => aoSelecionar(sala)}
         >
           <div className="menu-salas_info">
-            <MdMeetingRoom />
+            <MdMeetingRoom className="menu-salas_icon" />
 
-            <span>{sala.nome}</span>
+            <div>
+              <h3>{sala.nome || sala.tipoSala}</h3>
+              <p>{sala.cidade}</p>
+            </div>
           </div>
 
           <MdKeyboardArrowRight />
@@ -37,15 +59,3 @@ const MenuSalas = ({
 };
 
 export default MenuSalas;
-
-/**   
- * Como usar:
- *   <MenuSalas salas={[
-    { id: 1, nome: "Sala Reunião" },
-    { id: 2, nome: "Sala TI" },
-    { id: 3, nome: "Sala RH" },
-  ]}
-  salaSelecionada={1}
-  aoSelecionar={(sala) => console.log(sala)} />
-    </> */
-
