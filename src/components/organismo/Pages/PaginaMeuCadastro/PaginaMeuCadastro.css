@@ -1,0 +1,47 @@
+.pagina-meu-cadastro_root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.pagina-meu-cadastro_card {
+  background: #ffffff;
+  border: 1px solid #dce2e8;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(35, 43, 62, 0.06);
+  padding: 24px;
+  max-width: 560px;
+}
+
+.pagina-meu-cadastro_item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.pagina-meu-cadastro_item:last-child {
+  border-bottom: none;
+}
+
+.pagina-meu-cadastro_label {
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.pagina-meu-cadastro_button {
+  border: none;
+  background: #1f7a5c;
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.pagina-meu-cadastro_button:hover {
+  opacity: 0.95;
+}

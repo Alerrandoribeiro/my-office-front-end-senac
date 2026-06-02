@@ -4,6 +4,7 @@ import PaginaInicial from "./components/organismo/Pages/PaginaInicial/PaginaInic
 import PaginaCadastroSala from "./components/organismo/Pages/PaginaCadastroSala/PaginaCadastroSala";
 import PaginaLogin from "./components/organismo/Pages/PaginaLogin/PaginaLogin";
 import PaginaCadastroUsuario from "./components/organismo/Pages/PaginaCadastroUsuario/PaginaCadastroUsuario";
+import PaginaMeuCadastro from "./components/organismo/Pages/PaginaMeuCadastro/PaginaMeuCadastro";
 import PaginaTodasAsSalas from "./components/organismo/Pages/PaginaTodasAsSalas/PaginaTodasAsSalas";
 import PaginaMinhasSalas from "./components/organismo/Pages/PaginaMinhasSalas/PaginaMinhasSalas";
 
@@ -29,8 +30,12 @@ const router = createBrowserRouter([
     element: <PaginaCadastroUsuario/>,
   } ,
   {
+    path: "/meu-cadastro",
+    element: <PaginaMeuCadastro/>,
+  } ,
+  {
     path: "/usuario-logado",
-    element: <></>,
+    element: <PaginaMinhasSalas/>,
   } ,
   {
     path: "/minhas-salas",

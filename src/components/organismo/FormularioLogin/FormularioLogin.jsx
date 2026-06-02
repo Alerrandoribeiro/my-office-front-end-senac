@@ -12,6 +12,7 @@ import {
   senhaForte,
 } from "../../utils/validarFormulario";
 import { salvarUsuarioLogado, obterUsuarioLogado } from "../../utils/auth";
+import { autenticarUsuario } from "../../../service/usuarioService";
 import { useNavigate } from "react-router-dom";
 
 const FormularioLogin = () => {
@@ -50,16 +51,23 @@ const FormularioLogin = () => {
     return "";
   };
 
-  const fazerLogin = () => {
-    const usuarioLogado = {
-      email,
-      loginEm: new Date().toISOString(),
-    };
+  const fazerLogin = async () => {
+    try {
+      const resultado = await autenticarUsuario({ email, senha });
+      console.debug("Login response:", resultado);
 
-    salvarUsuarioLogado(usuarioLogado);
+      if (!resultado || typeof resultado !== "object") {
+        throw new Error("Resposta de login inesperada");
+      }
 
-    alert("Login realizado com sucesso!");
-    navigate("/");
+      salvarUsuarioLogado(resultado);
+
+      alert("Login realizado com sucesso!");
+      navigate("/minhas-salas");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao autenticar: " + (err.message || "Tente novamente"));
+    }
   };
 
   const botaoDesabilitado =

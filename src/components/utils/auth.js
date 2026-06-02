@@ -1,12 +1,17 @@
 const USUARIO_LOGADO_KEY = "myoffice-usuario-logado";
 
-export function salvarUsuarioLogado(usuario) {
-  localStorage.setItem(USUARIO_LOGADO_KEY, JSON.stringify(usuario));
+export function salvarUsuarioLogado(payload) {
+  localStorage.setItem(USUARIO_LOGADO_KEY, JSON.stringify(payload));
 }
 
 export function obterUsuarioLogado() {
-  const usuario = localStorage.getItem(USUARIO_LOGADO_KEY);
-  return usuario ? JSON.parse(usuario) : null;
+  const raw = localStorage.getItem(USUARIO_LOGADO_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+
+export function obterUsuario() {
+  const sessao = obterUsuarioLogado();
+  return sessao || null;
 }
 
 export function removerUsuarioLogado() {
@@ -14,5 +19,5 @@ export function removerUsuarioLogado() {
 }
 
 export function estaLogado() {
-  return Boolean(obterUsuarioLogado());
+  return Boolean(obterUsuario());
 }
