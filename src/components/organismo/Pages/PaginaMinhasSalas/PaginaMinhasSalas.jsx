@@ -29,6 +29,7 @@ const PaginaMinhasSalas = () => {
 
         const data = await response.json();
 
+        console.debug("Minhas salas fetched:", data);
         setSalas(data);
       } catch (error) {
         console.error(error);

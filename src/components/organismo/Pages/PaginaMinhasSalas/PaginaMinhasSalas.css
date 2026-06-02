@@ -1,0 +1,37 @@
+.pagina-minhas-salas_root {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 16px;
+}
+
+.pagina-minhas-salas_root h1 {
+  margin: 8px 0 24px;
+  font-size: 28px;
+  color: #0f172a;
+}
+
+.salas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+/* medium screens */
+@media (max-width: 1024px) {
+  .salas-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* small screens */
+@media (max-width: 640px) {
+  .salas-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .pagina-minhas-salas_root {
+    padding: 16px;
+  }
+}

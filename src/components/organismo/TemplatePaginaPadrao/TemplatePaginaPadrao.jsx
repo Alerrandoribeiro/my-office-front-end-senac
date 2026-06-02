@@ -11,7 +11,7 @@ const TemplatePaginaPadrao = ({children, appbar}) => {
           <main
             style={{
               padding: "20px",
-              maxWidth: "800px",
+              maxWidth: "1200px",
               margin: "0 auto",
             }}
           >

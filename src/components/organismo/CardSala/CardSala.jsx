@@ -1,4 +1,5 @@
 import "./CardSala.css";
+import { formatarComMascara, MASCARA_CEP } from "../../utils/mascaras";
 
 const CardSala = ({
   tipoSala,
@@ -59,7 +60,7 @@ const CardSala = ({
 
           <div className="card-sala_footer">
             <span>CEP</span>
-            <strong>{cep || "00000-000"}</strong>
+            <strong>{formatarComMascara(cep || "", MASCARA_CEP) || "00000-000"}</strong>
           </div>
         </div>
       </div>
