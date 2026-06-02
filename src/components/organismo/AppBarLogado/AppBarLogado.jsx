@@ -4,15 +4,17 @@ import { IoLogOut } from "react-icons/io5";
 
 import Botao from "../../atomos/Botao/Botao";
 import AppBar from "../AppBar/AppBar";
+import { useNavigate } from "react-router-dom";
+import { removerUsuarioLogado } from "../../utils/auth";
 
 const links = [
   {
-    to: "/",
+    to: "/todas-salas",
     texto: "Início",
     icone: <FaHome />
   },
   {
-    to: "/cadastro-sala",
+    to: "/minhas-salas",
     texto: "Minhas Salas",
     icone: <MdMeetingRoom />
   },
@@ -29,6 +31,12 @@ const links = [
 ];
 
 const Pagina = () => {
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    removerUsuarioLogado();
+    navigate("/login");
+  }
   return (
     <AppBar
       logo={{
@@ -42,6 +50,7 @@ const Pagina = () => {
           altura={10}
           texto="Sair"
           icone={<IoLogOut />}
+          aoClicar={handleLogout}
         />
       }
     />

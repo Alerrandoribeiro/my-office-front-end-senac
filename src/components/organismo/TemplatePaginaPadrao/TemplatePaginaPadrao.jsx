@@ -1,11 +1,13 @@
 import React from 'react'
 import Footer from '../Footer/Footer';
+import AppBarLogado from '../AppBarLogado/AppBarLogado';
+import { estaLogado } from '../../utils/auth';
 
 const TemplatePaginaPadrao = ({children, appbar}) => {
     return (
         <div>
-          {appbar}
-    
+          {estaLogado() ? <AppBarLogado /> : appbar}
+
           <main
             style={{
               padding: "20px",
@@ -15,7 +17,7 @@ const TemplatePaginaPadrao = ({children, appbar}) => {
           >
             {children}
           </main>
-    
+
           <Footer />
         </div>
       );

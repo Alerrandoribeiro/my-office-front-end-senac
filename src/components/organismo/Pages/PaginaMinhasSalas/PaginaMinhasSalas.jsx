@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import PaginaInicialUsuarioLogado from "../PaginaInicialUsuarioLogado/PaginaInicialUsuarioLogado";
-
+import TemplatePaginaPadrao from "../../TemplatePaginaPadrao/TemplatePaginaPadrao";
+import AppBar from "../../AppBar/AppBar";
 import { obterUsuarioLogado } from "../../../utils/auth";
 
 import "./PaginaMinhasSalas.css";
@@ -39,7 +39,17 @@ const PaginaMinhasSalas = () => {
   }, []);
 
   return (
-    <PaginaInicialUsuarioLogado>
+    <TemplatePaginaPadrao
+      appbar={
+        <AppBar
+          logo={{
+            to: "/todas-salas",
+            texto: "MyOffice"
+          }}
+          links={[]}
+        />
+      }
+    >
       <div className="pagina-minhas-salas_root">
         <h1>Minhas Salas</h1>
 
@@ -62,7 +72,7 @@ const PaginaMinhasSalas = () => {
           ))}
         </div>
       </div>
-    </PaginaInicialUsuarioLogado>
+    </TemplatePaginaPadrao>
   );
 };
 

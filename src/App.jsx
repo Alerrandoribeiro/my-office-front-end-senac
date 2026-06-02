@@ -5,7 +5,6 @@ import PaginaCadastroSala from "./components/organismo/Pages/PaginaCadastroSala/
 import PaginaLogin from "./components/organismo/Pages/PaginaLogin/PaginaLogin";
 import PaginaCadastroUsuario from "./components/organismo/Pages/PaginaCadastroUsuario/PaginaCadastroUsuario";
 import PaginaTodasAsSalas from "./components/organismo/Pages/PaginaTodasAsSalas/PaginaTodasAsSalas";
-import PaginaInicialUsuarioLogado from "./components/organismo/Pages/PaginaInicialUsuarioLogado/PaginaInicialUsuarioLogado";
 import PaginaMinhasSalas from "./components/organismo/Pages/PaginaMinhasSalas/PaginaMinhasSalas";
 
 const router = createBrowserRouter([
@@ -31,7 +30,7 @@ const router = createBrowserRouter([
   } ,
   {
     path: "/usuario-logado",
-    element: <PaginaInicialUsuarioLogado/>,
+    element: <></>,
   } ,
   {
     path: "/minhas-salas",
