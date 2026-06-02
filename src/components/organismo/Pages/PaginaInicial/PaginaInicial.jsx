@@ -12,7 +12,6 @@ import { FaUsers } from "react-icons/fa";
 import Botao from "../../../atomos/Botao/Botao";
 
 import { useNavigate } from "react-router-dom";
-import Pesquisar from "../../../moleculas/Pesquisar/Pesquisar";
 import { obterUsuarioLogado, removerUsuarioLogado } from "../../../utils/auth";
 
 const PaginaInicial = ({ children }) => {
