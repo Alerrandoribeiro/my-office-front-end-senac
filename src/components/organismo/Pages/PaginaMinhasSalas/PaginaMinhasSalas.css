@@ -10,6 +10,79 @@
   color: #0f172a;
 }
 
+.pagina-minhas-salas_error {
+  color: #b91c1c;
+  margin-bottom: 18px;
+}
+
+.pagina-minhas-salas_edit-form {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.pagina-minhas-salas_edit-form h2 {
+  margin: 0 0 18px;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.pagina-minhas-salas_form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.pagina-minhas-salas_form-row label,
+.pagina-minhas-salas_edit-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #334155;
+}
+
+.pagina-minhas-salas_edit-form input,
+.pagina-minhas-salas_edit-form textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 16px;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.pagina-minhas-salas_edit-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.pagina-minhas-salas_edit-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pagina-minhas-salas_edit-actions button {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pagina-minhas-salas_edit-actions button.secondary {
+  background: #cbd5e1;
+  color: #1e293b;
+}
+
+.pagina-minhas-salas_edit-actions button:not(.secondary) {
+  background: #2563eb;
+  color: #fff;
+}
+
 .salas-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

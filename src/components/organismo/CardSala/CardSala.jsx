@@ -3,6 +3,8 @@ import { formatarComMascara, MASCARA_CEP } from "../../utils/mascaras";
 
 const CardSala = ({
   tipoSala,
+  tipo,
+  nome,
   descricao,
   capacidade,
   preco,
@@ -13,6 +15,7 @@ const CardSala = ({
   estado,
   cep,
   imagem,
+  actions,
 }) => {
   const previewImagem =
     imagem ||
@@ -31,7 +34,7 @@ const CardSala = ({
         <div className="card-sala_body">
           <span className="card-sala_tag">Prévia da Sala</span>
           <h2 className="card-sala_title">
-            {tipoSala || "Sala personalizada"}
+            {tipoSala || tipo || nome || "Sala personalizada"}
           </h2>
           <p className="card-sala_description">
             {descricao || "Adicione a descrição da sala para ver como ela ficará no card."}
@@ -62,6 +65,21 @@ const CardSala = ({
             <span>CEP</span>
             <strong>{formatarComMascara(cep || "", MASCARA_CEP) || "00000-000"}</strong>
           </div>
+
+          {actions && actions.length > 0 && (
+            <div className="card-sala_actions">
+              {actions.map((action, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className={`card-sala_action-button card-sala_action-button-${action.variant || "primary"}`}
+                  onClick={action.onClick}
+                >
+                  {action.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </aside>
