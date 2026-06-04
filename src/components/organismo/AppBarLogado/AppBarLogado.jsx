@@ -1,4 +1,4 @@
-import { FaHome, FaUser, FaCalendarCheck } from "react-icons/fa";
+import { FaHome, FaUser, FaCalendarCheck, FaPlus } from "react-icons/fa";
 import { MdMeetingRoom } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
 
@@ -19,6 +19,11 @@ const links = [
     icone: <MdMeetingRoom />
   },
   {
+    to: "/cadastro-sala",
+    texto: "Cadastrar Sala",
+    icone: <FaPlus />
+  },
+  {
     to: "/reservas",
     texto: "Reservas",
     icone: <FaCalendarCheck />
@@ -37,6 +42,7 @@ const Pagina = () => {
     removerUsuarioLogado();
     navigate("/login");
   }
+
   return (
     <AppBar
       logo={{

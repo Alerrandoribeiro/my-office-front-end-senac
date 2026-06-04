@@ -17,8 +17,16 @@ const CardSala = ({
   imagem,
   actions,
 }) => {
+  const getImagemSrc = (value) => {
+    if (!value) return null;
+    const trimmed = String(value).trim();
+    if (trimmed.startsWith("data:image/")) return trimmed;
+    if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/")) return trimmed;
+    return `data:image/jpeg;base64,${trimmed}`;
+  };
+
   const previewImagem =
-    imagem ||
+    getImagemSrc(imagem) ||
     "https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=800&q=60";
 
   return (

@@ -6,8 +6,8 @@ import "./FormularioDeCadastroDeSala.css";
 import InputComLabel from "../../moleculas/InputComLabel/InputComLabel";
 import Botao from "../../atomos/Botao/Botao";
 import CardSala from "../CardSala/CardSala";
-import { buscarEnderecoPorCep } from "../../../../service/cepService";
-import { cadastrarSala } from "../../../../service/salaService";
+import { buscarEnderecoPorCep } from "../../../service/cepService";
+import { cadastrarSala } from "../../../service/salaService";
 
 import {
     MASCARA_CEP,
@@ -102,6 +102,7 @@ const FormularioDeCadastroDeSala = () => {
     const fazerCadastroSala = async () => {
         try {
             const imagemBase64 = await carregarImagemComoBase64(imagemArquivo);
+            const imagemRaw = imagemBase64?.split(",")[1] || imagemBase64;
             const salaPayload = {
                 cep,
                 estado,
@@ -116,6 +117,7 @@ const FormularioDeCadastroDeSala = () => {
                 tipo_sala: tipoSala,
                 descricao,
                 imagem: imagemBase64,
+                imagemBase64: imagemRaw,
                 latitude,
                 longitude,
             };

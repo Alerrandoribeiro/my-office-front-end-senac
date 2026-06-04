@@ -12,6 +12,21 @@ function createError(message) {
   return new Error(message || "Erro na requisição de sala");
 }
 
+function normalizarImagem(imagem) {
+  if (!imagem || typeof imagem !== "string") return imagem;
+
+  const valor = imagem.trim();
+  if (valor.startsWith("data:image/")) {
+    return valor;
+  }
+
+  if (/^https?:\/\//i.test(valor) || valor.startsWith("/")) {
+    return valor;
+  }
+
+  return `data:image/jpeg;base64,${valor}`;
+}
+
 function normalizarSala(sala) {
   if (!sala || typeof sala !== "object") return sala;
 
@@ -22,6 +37,7 @@ function normalizarSala(sala) {
     tipoSala: sala.tipoSala || sala.tipo || sala.tipo_sala || "",
     tipo: sala.tipo || sala.tipoSala || sala.tipo_sala || "",
     nome: sala.nome || tipoPadrao,
+    imagem: normalizarImagem(sala.imagem),
   };
 }
 
