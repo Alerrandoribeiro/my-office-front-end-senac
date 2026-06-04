@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 
+import "./PaginaMinhasSalas.css";
 import TemplatePaginaPadrao from "../../TemplatePaginaPadrao/TemplatePaginaPadrao";
 import AppBar from "../../AppBar/AppBar";
 import { obterUsuarioLogado } from "../../../utils/auth";
 import { buscarSalasDoUsuario, excluirSala, atualizarSala } from "../../../../service/salaService";
+import { buscarEnderecoPorCep } from "../../../../service/cepService";
 import CardSala from "../../CardSala/CardSala";
+import Modal from "../../../atomos/Modal/Modal";
+import { formatarComMascara, MASCARA_CEP } from "../../../utils/mascaras";
 
 const PaginaMinhasSalas = () => {
   const [salas, setSalas] = useState([]);
   const [salaEmEdicao, setSalaEmEdicao] = useState(null);
+  const [imagemPreview, setImagemPreview] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
@@ -46,7 +51,10 @@ const PaginaMinhasSalas = () => {
   }, []);
 
   const iniciarEdicao = (sala) => {
-    setSalaEmEdicao({ ...sala });
+    setSalaEmEdicao({
+      ...sala,
+      tipoSala: sala.tipoSala || sala.tipo || sala.nome || "",
+    });
   };
 
   const cancelarEdicao = () => {
@@ -67,6 +75,58 @@ const PaginaMinhasSalas = () => {
     }
   };
 
+  const buscarCepEdicao = async (valorCep) => {
+    const cepSemMascara = String(valorCep).replace(/\D/g, "");
+
+    if (cepSemMascara.length !== 8) return;
+
+    try {
+      const data = await buscarEnderecoPorCep(cepSemMascara);
+      setSalaEmEdicao((prev) => ({
+        ...prev,
+        rua: data.street || prev?.rua || "",
+        bairro: data.neighborhood || prev?.bairro || "",
+        cidade: data.city || prev?.cidade || "",
+        estado: data.state || prev?.estado || "",
+        latitude:
+          data.location?.coordinates?.latitude ?? prev?.latitude ?? "",
+        longitude:
+          data.location?.coordinates?.longitude ?? prev?.longitude ?? "",
+      }));
+    } catch (error) {
+      console.error("CEP não encontrado:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!salaEmEdicao) {
+      setImagemPreview("");
+      return;
+    }
+
+    if (salaEmEdicao.imagemArquivo) {
+      const objectUrl = URL.createObjectURL(salaEmEdicao.imagemArquivo);
+      setImagemPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+
+    setImagemPreview(salaEmEdicao.imagem || "");
+  }, [salaEmEdicao]);
+
+  const carregarImagemComoBase64 = (arquivo) => {
+    return new Promise((resolve, reject) => {
+      if (!arquivo) {
+        resolve(null);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(arquivo);
+    });
+  };
+
   const handleSalvarEdicao = async (event) => {
     event.preventDefault();
 
@@ -76,7 +136,23 @@ const PaginaMinhasSalas = () => {
 
     try {
       const salaId = obterSalaId(salaEmEdicao);
-      const salaAtualizada = await atualizarSala(salaId, salaEmEdicao);
+      const payload = { ...salaEmEdicao };
+
+      if (salaEmEdicao.imagemArquivo) {
+        const imagemBase64 = await carregarImagemComoBase64(
+          salaEmEdicao.imagemArquivo
+        );
+        payload.imagem = imagemBase64;
+      }
+
+      delete payload.imagemArquivo;
+
+      if (payload.tipoSala) {
+        payload.tipo = payload.tipoSala;
+        payload.tipo_sala = payload.tipoSala;
+      }
+
+      const salaAtualizada = await atualizarSala(salaId, payload);
       setSalas((prev) =>
         prev.map((s) =>
           obterSalaId(s) === obterSalaId(salaAtualizada) ? salaAtualizada : s
@@ -112,35 +188,51 @@ const PaginaMinhasSalas = () => {
         {erro && <p className="pagina-minhas-salas_error">{erro}</p>}
 
         {salaEmEdicao && (
-          <section className="pagina-minhas-salas_edit-form">
-            <h2>Editar sala</h2>
+          <Modal
+            title="Editar sala"
+            description="Altere os dados da sala e salve para aplicar."
+            onClose={cancelarEdicao}
+          >
             <form onSubmit={handleSalvarEdicao}>
-              <div className="pagina-minhas-salas_form-row">
+              <div className="modal_form-row">
                 <label>
-                  Tipo de sala
+                  CEP
                   <input
-                    value={salaEmEdicao.tipoSala || ""}
-                    onChange={(e) => handleCampoEdicao("tipoSala", e.target.value)}
+                    value={salaEmEdicao.cep || ""}
+                    onChange={(e) => {
+                      const valor = formatarComMascara(e.target.value, MASCARA_CEP);
+                      handleCampoEdicao("cep", valor);
+                      buscarCepEdicao(valor);
+                    }}
                   />
                 </label>
                 <label>
-                  Preço
+                  Estado
                   <input
-                    value={salaEmEdicao.preco || ""}
-                    onChange={(e) => handleCampoEdicao("preco", e.target.value)}
+                    value={salaEmEdicao.estado || ""}
+                    onChange={(e) => handleCampoEdicao("estado", e.target.value)}
                   />
                 </label>
               </div>
 
-              <label>
-                Descrição
-                <textarea
-                  value={salaEmEdicao.descricao || ""}
-                  onChange={(e) => handleCampoEdicao("descricao", e.target.value)}
-                />
-              </label>
+              <div className="modal_form-row">
+                <label>
+                  Cidade
+                  <input
+                    value={salaEmEdicao.cidade || ""}
+                    onChange={(e) => handleCampoEdicao("cidade", e.target.value)}
+                  />
+                </label>
+                <label>
+                  Bairro
+                  <input
+                    value={salaEmEdicao.bairro || ""}
+                    onChange={(e) => handleCampoEdicao("bairro", e.target.value)}
+                  />
+                </label>
+              </div>
 
-              <div className="pagina-minhas-salas_form-row">
+              <div className="modal_form-row">
                 <label>
                   Rua
                   <input
@@ -157,39 +249,59 @@ const PaginaMinhasSalas = () => {
                 </label>
               </div>
 
-              <div className="pagina-minhas-salas_form-row">
+              <div className="modal_form-row">
                 <label>
-                  Bairro
+                  Preço
                   <input
-                    value={salaEmEdicao.bairro || ""}
-                    onChange={(e) => handleCampoEdicao("bairro", e.target.value)}
+                    value={salaEmEdicao.preco || ""}
+                    onChange={(e) => handleCampoEdicao("preco", e.target.value)}
                   />
                 </label>
                 <label>
-                  Cidade
+                  Capacidade
                   <input
-                    value={salaEmEdicao.cidade || ""}
-                    onChange={(e) => handleCampoEdicao("cidade", e.target.value)}
+                    value={salaEmEdicao.capacidade || ""}
+                    onChange={(e) => handleCampoEdicao("capacidade", e.target.value)}
                   />
                 </label>
               </div>
 
-              <div className="pagina-minhas-salas_form-row">
+              <div className="modal_form-row">
                 <label>
-                  Estado
+                  Tipo da sala
                   <input
-                    value={salaEmEdicao.estado || ""}
-                    onChange={(e) => handleCampoEdicao("estado", e.target.value)}
+                    value={salaEmEdicao.tipoSala || ""}
+                    onChange={(e) => handleCampoEdicao("tipoSala", e.target.value)}
                   />
                 </label>
                 <label>
-                  CEP
+                  Upload da imagem
                   <input
-                    value={salaEmEdicao.cep || ""}
-                    onChange={(e) => handleCampoEdicao("cep", e.target.value)}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      handleCampoEdicao(
+                        "imagemArquivo",
+                        e.target.files?.[0] || null
+                      )
+                    }
                   />
                 </label>
               </div>
+
+              {imagemPreview && (
+                <div className="modal_image-preview">
+                  <img src={imagemPreview} alt="Preview da sala" />
+                </div>
+              )}
+
+              <label>
+                Descrição
+                <textarea
+                  value={salaEmEdicao.descricao || ""}
+                  onChange={(e) => handleCampoEdicao("descricao", e.target.value)}
+                />
+              </label>
 
               <div className="pagina-minhas-salas_edit-actions">
                 <button type="submit">Salvar alterações</button>
@@ -198,7 +310,7 @@ const PaginaMinhasSalas = () => {
                 </button>
               </div>
             </form>
-          </section>
+          </Modal>
         )}
 
         {carregando ? (

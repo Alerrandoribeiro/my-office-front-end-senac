@@ -12,14 +12,33 @@ function createError(message) {
   return new Error(message || "Erro na requisição de sala");
 }
 
-async function buscarTodasSalas() {
+function normalizarSala(sala) {
+  if (!sala || typeof sala !== "object") return sala;
+
+  const tipoPadrao = sala.tipoSala || sala.tipo || sala.tipo_sala || "";
+
+  return {
+    ...sala,
+    tipoSala: sala.tipoSala || sala.tipo || sala.tipo_sala || "",
+    tipo: sala.tipo || sala.tipoSala || sala.tipo_sala || "",
+    nome: sala.nome || tipoPadrao,
+  };
+}
+
+function normalizarSalas(salas) {
+  if (!Array.isArray(salas)) return [];
+  return salas.map(normalizarSala);
+}
+
+export async function buscarTodasSalas() {
   const response = await fetch(BASE_URL);
   if (!response.ok) {
     const errorPayload = await parseResponse(response);
     throw createError(typeof errorPayload === "string" ? errorPayload : JSON.stringify(errorPayload));
   }
   const data = await parseResponse(response);
-  return Array.isArray(data) ? data : data?.salas || [];
+  const result = Array.isArray(data) ? data : data?.salas || [];
+  return normalizarSalas(result);
 }
 
 function filtrarSalasDoUsuario(salas, userId) {
@@ -78,5 +97,22 @@ export async function atualizarSala(salaId, salaData) {
     const errorPayload = await parseResponse(response);
     throw createError(typeof errorPayload === "string" ? errorPayload : JSON.stringify(errorPayload));
   }
-  return parseResponse(response);
+  const updated = await parseResponse(response);
+  return normalizarSala(updated);
+}
+
+export async function cadastrarSala(salaData) {
+  const response = await fetch(BASE_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(salaData),
+  });
+  if (!response.ok) {
+    const errorPayload = await parseResponse(response);
+    throw createError(typeof errorPayload === "string" ? errorPayload : JSON.stringify(errorPayload));
+  }
+  const created = await parseResponse(response);
+  return normalizarSala(created);
 }

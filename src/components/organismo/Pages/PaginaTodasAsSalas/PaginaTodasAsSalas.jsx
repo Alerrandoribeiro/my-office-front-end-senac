@@ -4,6 +4,7 @@ import PaginaInicial from "../PaginaInicial/PaginaInicial";
 
 import "./PaginaTodasAsSalas.css";
 import CardSala from "../../CardSala/CardSala";
+import { buscarTodasSalas } from "../../../../service/salaService";
 
 const PaginaTodasAsSalas = () => {
   const [salas, setSalas] = useState([]);
@@ -11,12 +12,7 @@ const PaginaTodasAsSalas = () => {
   useEffect(() => {
     const buscarSalas = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/salas"
-        );
-
-        const data = await response.json();
-
+        const data = await buscarTodasSalas();
         setSalas(data);
       } catch (error) {
         console.error("Erro ao buscar salas:", error);

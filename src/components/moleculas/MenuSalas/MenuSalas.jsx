@@ -5,6 +5,7 @@ import {
 } from "react-icons/md";
 
 import "./MenuSalas.css";
+import { buscarTodasSalas } from "../../../service/salaService";
 
 const MenuSalas = ({
   salaSelecionada,
@@ -15,12 +16,7 @@ const MenuSalas = ({
   useEffect(() => {
     const buscarSalas = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/salas"
-        );
-
-        const data = await response.json();
-
+        const data = await buscarTodasSalas();
         setSalas(data);
       } catch (error) {
         console.error("Erro ao buscar salas:", error);

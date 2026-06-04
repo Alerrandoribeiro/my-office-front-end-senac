@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 import "./FormularioDeCadastroDeSala.css";
@@ -7,6 +6,8 @@ import "./FormularioDeCadastroDeSala.css";
 import InputComLabel from "../../moleculas/InputComLabel/InputComLabel";
 import Botao from "../../atomos/Botao/Botao";
 import CardSala from "../CardSala/CardSala";
+import { buscarEnderecoPorCep } from "../../../../service/cepService";
+import { cadastrarSala } from "../../../../service/salaService";
 
 import {
     MASCARA_CEP,
@@ -56,16 +57,14 @@ const FormularioDeCadastroDeSala = () => {
         if (cepSemMascara.length !== 8) return;
 
         try {
-            const resp = await axios.get(
-                `https://brasilapi.com.br/api/cep/v2/${cepSemMascara}`
-            );
+            const resp = await buscarEnderecoPorCep(cepSemMascara);
 
-            setRua(resp.data.street || "");
-            setBairro(resp.data.neighborhood || "");
-            setCidade(resp.data.city || "");
-            setEstado(resp.data.state || "");
-            setLatitude(resp.data.location?.coordinates?.latitude || "");
-            setLongitude(resp.data.location?.coordinates?.longitude || "");
+            setRua(resp.street || "");
+            setBairro(resp.neighborhood || "");
+            setCidade(resp.city || "");
+            setEstado(resp.state || "");
+            setLatitude(resp.location?.coordinates?.latitude || "");
+            setLongitude(resp.location?.coordinates?.longitude || "");
 
             toast.success("Endereço encontrado!");
         } catch (error) {
@@ -86,26 +85,48 @@ const FormularioDeCadastroDeSala = () => {
         return () => URL.revokeObjectURL(objectUrl);
     }, [imagemArquivo]);
 
-    const fazerCadastroSala = () => {
-        console.log({
-            cep,
-            estado,
-            cidade,
-            bairro,
-            rua,
-            numero,
-            preco,
-            capacidade,
-            tipoSala,
-            descricao,
-            imagemArquivo,
-            latitude,
-            longitude
+    const carregarImagemComoBase64 = (arquivo) => {
+        return new Promise((resolve, reject) => {
+            if (!arquivo) {
+                resolve(null);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(arquivo);
         });
+    };
 
-        toast.success("Cadastro realizado com sucesso!");
+    const fazerCadastroSala = async () => {
+        try {
+            const imagemBase64 = await carregarImagemComoBase64(imagemArquivo);
+            const salaPayload = {
+                cep,
+                estado,
+                cidade,
+                bairro,
+                rua,
+                numero,
+                preco,
+                capacidade,
+                tipoSala,
+                tipo: tipoSala,
+                tipo_sala: tipoSala,
+                descricao,
+                imagem: imagemBase64,
+                latitude,
+                longitude,
+            };
 
-        limparCampos();
+            await cadastrarSala(salaPayload);
+            toast.success("Cadastro realizado com sucesso!");
+            limparCampos();
+        } catch (error) {
+            toast.error("Erro ao cadastrar sala.");
+            console.error(error);
+        }
     };
 
     const botaoDesabilitado =
