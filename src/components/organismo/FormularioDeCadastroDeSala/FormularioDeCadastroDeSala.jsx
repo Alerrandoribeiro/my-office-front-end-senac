@@ -8,6 +8,7 @@ import Botao from "../../atomos/Botao/Botao";
 import CardSala from "../CardSala/CardSala";
 import { buscarEnderecoPorCep } from "../../../service/cepService";
 import { cadastrarSala } from "../../../service/salaService";
+import { obterUsuarioLogado } from "../../utils/auth";
 
 import {
     MASCARA_CEP,
@@ -101,8 +102,14 @@ const FormularioDeCadastroDeSala = () => {
 
     const fazerCadastroSala = async () => {
         try {
+            const usuarioLogado = obterUsuarioLogado();
+
+            if (!usuarioLogado || !usuarioLogado.id) {
+                toast.error("Usuário não autenticado!");
+                return;
+            }
+
             const imagemBase64 = await carregarImagemComoBase64(imagemArquivo);
-            const imagemRaw = imagemBase64?.split(",")[1] || imagemBase64;
             const salaPayload = {
                 cep,
                 estado,
@@ -112,14 +119,12 @@ const FormularioDeCadastroDeSala = () => {
                 numero,
                 preco,
                 capacidade,
-                tipoSala,
-                tipo: tipoSala,
                 tipo_sala: tipoSala,
                 descricao,
                 imagem: imagemBase64,
-                imagemBase64: imagemRaw,
                 latitude,
                 longitude,
+                usuarioId: usuarioLogado.id,
             };
 
             await cadastrarSala(salaPayload);

@@ -21,6 +21,7 @@ const CardSala = ({
     if (!value) return null;
     const trimmed = String(value).trim();
     if (trimmed.startsWith("data:image/")) return trimmed;
+    if (trimmed.startsWith("blob:")) return trimmed;
     if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/")) return trimmed;
     return `data:image/jpeg;base64,${trimmed}`;
   };
