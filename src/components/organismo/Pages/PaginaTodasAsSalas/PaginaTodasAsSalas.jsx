@@ -13,6 +13,11 @@ const PaginaTodasAsSalas = () => {
     const buscarSalas = async () => {
       try {
         const data = await buscarTodasSalas();
+        console.log("[PaginaTodasAsSalas] Salas recebidas:", data);
+        if (data && data.length > 0) {
+          console.log("[PaginaTodasAsSalas] Primeira sala:", data[0]);
+          console.log("[PaginaTodasAsSalas] Chaves da primeira sala:", Object.keys(data[0]));
+        }
         setSalas(data);
       } catch (error) {
         console.error("Erro ao buscar salas:", error);
@@ -25,9 +30,15 @@ const PaginaTodasAsSalas = () => {
   return (
     <PaginaInicial>
       <div className="salas-grid">
-        {salas.map((sala) => (
+        {salas.map((sala) => {
+          console.log("[PaginaTodasAsSalas] Sala completa:", sala);
+          console.log("[PaginaTodasAsSalas] Chaves da sala:", Object.keys(sala));
+          console.log("[PaginaTodasAsSalas] sala.idSala:", sala.idSala, "sala.id:", sala.id, "sala.id_sala:", sala.id_sala);
+          
+          return (
           <CardSala
-            key={sala.idSala}
+            key={sala.idSala || sala.id || sala.id_sala}
+            salaId={sala.idSala || sala.id || sala.id_sala}
             tipoSala={sala.tipoSala}
             descricao={sala.descricao}
             capacidade={sala.capacidade}
@@ -40,7 +51,8 @@ const PaginaTodasAsSalas = () => {
             cep={sala.cep}
             imagem={sala.imagem}
           />
-        ))}
+          );
+        })}
       </div>
     </PaginaInicial>
   );

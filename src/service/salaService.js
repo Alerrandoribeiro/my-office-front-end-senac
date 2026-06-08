@@ -30,6 +30,9 @@ function normalizarImagem(imagem) {
 function normalizarSala(sala) {
   if (!sala || typeof sala !== "object") return sala;
 
+  console.log("[normalizarSala] Sala recebida do backend:", sala);
+  console.log("[normalizarSala] Chaves disponíveis:", Object.keys(sala));
+
   const tipoPadrao = sala.tipoSala || sala.tipo || sala.tipo_sala || "";
 
   return {

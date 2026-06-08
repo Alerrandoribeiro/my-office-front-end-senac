@@ -1,5 +1,7 @@
+import { useState } from "react";
 import "./CardSala.css";
 import { formatarComMascara, MASCARA_CEP } from "../../utils/mascaras";
+import ModalReservaSala from "../../moleculas/ModalReservaSala/ModalReservaSala";
 
 const CardSala = ({
   tipoSala,
@@ -15,8 +17,25 @@ const CardSala = ({
   estado,
   cep,
   imagem,
+  id,
+  idSala,
+  salaId,
+  id_sala,
   actions,
+  onReservaSuccess,
+  ...props
 }) => {
+  const [mostrarModalReserva, setMostrarModalReserva] = useState(false);
+  
+  // Tenta encontrar o ID da sala em diferentes nomes de propriedade
+  const obterSalaId = () => salaId || idSala || id || id_sala || props.id_sala;
+  const salaIdFinal = obterSalaId();
+  
+  console.log("[CardSala] TODOS os props recebidos:", {
+    tipoSala, tipo, nome, descricao, capacidade, preco, rua, numero, bairro, cidade, estado, cep,
+    salaId, idSala, id, id_sala, ...props
+  });
+  console.log("[CardSala] salaIdFinal encontrado:", salaIdFinal);
   const getImagemSrc = (value) => {
     if (!value) return null;
     const trimmed = String(value).trim();
@@ -75,22 +94,43 @@ const CardSala = ({
             <strong>{formatarComMascara(cep || "", MASCARA_CEP) || "00000-000"}</strong>
           </div>
 
-          {actions && actions.length > 0 && (
-            <div className="card-sala_actions">
-              {actions.map((action, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className={`card-sala_action-button card-sala_action-button-${action.variant || "primary"}`}
-                  onClick={action.onClick}
-                >
-                  {action.label}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="card-sala_actions">
+            <button
+              type="button"
+              className="card-sala_action-button card-sala_action-button-reserva"
+              onClick={() => setMostrarModalReserva(true)}
+            >
+              Reservar Sala
+            </button>
+            {actions && actions.length > 0 && (
+              <>
+                {actions.map((action, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={`card-sala_action-button card-sala_action-button-${action.variant || "primary"}`}
+                    onClick={action.onClick}
+                  >
+                    {action.label}
+                  </button>
+                ))}
+              </>
+            )}
+          </div>
         </div>
       </div>
+
+      {mostrarModalReserva && (
+        <ModalReservaSala
+          salaId={salaIdFinal}
+          onClose={() => setMostrarModalReserva(false)}
+          onSuccess={() => {
+            if (onReservaSuccess) {
+              onReservaSuccess();
+            }
+          }}
+        />
+      )}
     </aside>
   );
 };

@@ -37,6 +37,11 @@ const PaginaMinhasSalas = () => {
       }
 
       const data = await buscarSalasDoUsuario(userId);
+      console.log("[PaginaMinhasSalas] Salas recebidas:", data);
+      if (data && data.length > 0) {
+        console.log("[PaginaMinhasSalas] Primeira sala:", data[0]);
+        console.log("[PaginaMinhasSalas] Chaves da primeira sala:", Object.keys(data[0]));
+      }
       setSalas(data);
     } catch (fetchError) {
       console.error(fetchError);
@@ -318,9 +323,16 @@ const PaginaMinhasSalas = () => {
         ) : (
           <div className="salas-grid">
             {Array.isArray(salas) && salas.length > 0 ? (
-              salas.map((sala) => (
+              salas.map((sala) => {
+                const salaId = obterSalaId(sala);
+                console.log("[PaginaMinhasSalas] Sala completa:", sala);
+                console.log("[PaginaMinhasSalas] Chaves da sala:", Object.keys(sala));
+                console.log("[PaginaMinhasSalas] salaId extraído:", salaId);
+                
+                return (
                 <CardSala
-                  key={obterSalaId(sala)}
+                  key={salaId}
+                  salaId={salaId}
                   tipoSala={sala.tipoSala}
                   tipo={sala.tipo}
                   nome={sala.nome}
@@ -347,7 +359,8 @@ const PaginaMinhasSalas = () => {
                     },
                   ]}
                 />
-              ))
+                );
+              })
             ) : (
               <p className="pagina-minhas-salas_empty">
                 Nenhuma sala encontrada ou resposta inválida da API.

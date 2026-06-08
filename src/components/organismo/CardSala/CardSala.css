@@ -151,6 +151,17 @@
   color: #fff;
 }
 
+.card-sala_action-button-reserva {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #fff;
+  flex: 1;
+  min-width: 140px;
+}
+
+.card-sala_action-button-reserva:hover {
+  background: linear-gradient(135deg, #15803d 0%, #14532d 100%);
+}
+
 .card-sala_action-button-danger {
   background: #ef4444;
   color: #fff;
