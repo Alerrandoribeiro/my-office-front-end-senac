@@ -51,9 +51,9 @@ export async function criarReserva(reserva) {
   }
 }
 
-export async function buscarReservasPorUsuario(usuarioId) {
+export async function buscarTodasReservas() {
   try {
-    const response = await fetch(`${BASE_URL}/usuario/${usuarioId}`, {
+    const response = await fetch(`${BASE_URL}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -70,17 +70,52 @@ export async function buscarReservasPorUsuario(usuarioId) {
   }
 }
 
+export async function buscarReservasPorUsuario(usuarioId) {
+  try {
+    const todasReservas = await buscarTodasReservas();
+    
+    if (!Array.isArray(todasReservas)) {
+      return [];
+    }
+
+    return todasReservas.filter((reserva) => {
+      const reservaUsuarioId = reserva.usuarioId || reserva.usuario_id || reserva.usuario?.id;
+      return Number(reservaUsuarioId) === Number(usuarioId);
+    });
+  } catch (erro) {
+    throw createError(erro.message);
+  }
+}
+
 export async function buscarReservasPorSala(salaId) {
   try {
-    const response = await fetch(`${BASE_URL}/sala/${salaId}`, {
-      method: "GET",
+    const todasReservas = await buscarTodasReservas();
+    
+    if (!Array.isArray(todasReservas)) {
+      return [];
+    }
+
+    return todasReservas.filter((reserva) => {
+      const reservaSalaId = reserva.salaId || reserva.sala_id || reserva.sala?.id;
+      return Number(reservaSalaId) === Number(salaId);
+    });
+  } catch (erro) {
+    throw createError(erro.message);
+  }
+}
+
+export async function atualizarReserva(id, reservaData) {
+  try {
+    const response = await fetch(`${BASE_URL}/${id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(reservaData),
     });
 
     if (!response.ok) {
-      throw createError(`Erro ao buscar reservas: ${response.statusText}`);
+      throw createError(`Erro ao atualizar reserva: ${response.statusText}`);
     }
 
     return await parseResponse(response);
