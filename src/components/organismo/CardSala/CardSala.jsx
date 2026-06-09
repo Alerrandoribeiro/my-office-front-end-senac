@@ -23,6 +23,7 @@ const CardSala = ({
   id_sala,
   actions,
   onReservaSuccess,
+  mostrarBotaoReserva = true,
   ...props
 }) => {
   const [mostrarModalReserva, setMostrarModalReserva] = useState(false);
@@ -95,13 +96,15 @@ const CardSala = ({
           </div>
 
           <div className="card-sala_actions">
-            <button
-              type="button"
-              className="card-sala_action-button card-sala_action-button-reserva"
-              onClick={() => setMostrarModalReserva(true)}
-            >
-              Reservar Sala
-            </button>
+            {mostrarBotaoReserva && (
+              <button
+                type="button"
+                className="card-sala_action-button card-sala_action-button-reserva"
+                onClick={() => setMostrarModalReserva(true)}
+              >
+                Reservar Sala
+              </button>
+            )}
             {actions && actions.length > 0 && (
               <>
                 {actions.map((action, index) => (

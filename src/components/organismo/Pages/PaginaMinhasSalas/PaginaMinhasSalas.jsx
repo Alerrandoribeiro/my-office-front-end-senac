@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import "./PaginaMinhasSalas.css";
 import TemplatePaginaPadrao from "../../TemplatePaginaPadrao/TemplatePaginaPadrao";
 import AppBar from "../../AppBar/AppBar";
@@ -9,6 +8,7 @@ import { buscarEnderecoPorCep } from "../../../../service/cepService";
 import CardSala from "../../CardSala/CardSala";
 import Modal from "../../../atomos/Modal/Modal";
 import { formatarComMascara, MASCARA_CEP } from "../../../utils/mascaras";
+import { useToast } from "../../../../hooks/useToast";
 
 const PaginaMinhasSalas = () => {
   const [salas, setSalas] = useState([]);
@@ -16,6 +16,7 @@ const PaginaMinhasSalas = () => {
   const [imagemPreview, setImagemPreview] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const toast = useToast();
 
   const obterSalaId = (sala) => sala?.id_sala || sala?.idSala || sala?.id;
 
@@ -74,9 +75,10 @@ const PaginaMinhasSalas = () => {
     try {
       await excluirSala(id);
       setSalas((prev) => prev.filter((s) => obterSalaId(s) !== id));
+      toast.success("Sala excluída com sucesso!");
     } catch (deleteError) {
       console.error(deleteError);
-      alert(deleteError.message || "Erro ao excluir sala");
+      toast.error(deleteError.message || "Erro ao excluir sala");
     }
   };
 
@@ -164,10 +166,10 @@ const PaginaMinhasSalas = () => {
         )
       );
       setSalaEmEdicao(null);
-      alert("Sala atualizada com sucesso!");
+      toast.success("Sala atualizada com sucesso!");
     } catch (updateError) {
       console.error(updateError);
-      alert(updateError.message || "Erro ao atualizar sala");
+      toast.error(updateError.message || "Erro ao atualizar sala");
     }
   };
 

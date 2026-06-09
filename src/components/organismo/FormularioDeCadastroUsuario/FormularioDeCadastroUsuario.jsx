@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { MdPersonAdd } from "react-icons/md";
 import "./FormularioDeCadastroUsuario.css";
-
 import InputComLabel from "../../moleculas/InputComLabel/InputComLabel";
 import Botao from "../../atomos/Botao/Botao";
-
 import { formatarComMascara, MASCARA_TELEFONE } from "../../utils/mascaras";
 import {
   emailValido,
@@ -14,10 +12,11 @@ import {
 } from "../../utils/validarFormulario";
 import { cadastrarUsuario } from "../../../service/usuarioService";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../../hooks/useToast";
 
 const FormularioDeCadastroUsuario = () => {
-
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -72,17 +71,14 @@ const FormularioDeCadastroUsuario = () => {
       };
 
       const resposta = await cadastrarUsuario(usuario);
-
       console.log(resposta);
 
-      alert("Cadastro realizado com sucesso!");
-
+      toast.success("Cadastro realizado com sucesso!");
       limparCampos();
-
+      navigate("/login");
     } catch (error) {
       console.error(error);
-
-      alert("Erro ao cadastrar usuário!");
+      toast.error(error.message || "Erro ao cadastrar usuário!");
     }
   };
 

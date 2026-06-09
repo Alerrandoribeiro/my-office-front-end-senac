@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-
 import { MdLogin } from "react-icons/md";
-
 import "./FormularioLogin.css";
 import InputComLabel from "../../moleculas/InputComLabel/InputComLabel";
 import Botao from "../../atomos/Botao/Botao";
-
 import {
   campoVazio,
   emailValido,
@@ -14,10 +11,11 @@ import {
 import { salvarUsuarioLogado, obterUsuarioLogado } from "../../utils/auth";
 import { autenticarUsuario } from "../../../service/usuarioService";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../../hooks/useToast";
 
 const FormularioLogin = () => {
-
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -62,11 +60,11 @@ const FormularioLogin = () => {
 
       salvarUsuarioLogado(resultado);
 
-      alert("Login realizado com sucesso!");
+      toast.success("Login realizado com sucesso!");
       navigate("/minhas-salas");
     } catch (err) {
       console.error(err);
-      alert("Erro ao autenticar: " + (err.message || "Tente novamente"));
+      toast.error("Erro ao autenticar: " + (err.message || "Tente novamente"));
     }
   };
 

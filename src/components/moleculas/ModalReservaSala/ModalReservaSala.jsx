@@ -4,16 +4,19 @@ import InputDate from "../../atomos/InputDate/InputDate";
 import Botao from "../../atomos/Botao/Botao";
 import { criarReserva } from "../../../service/reservaService";
 import { obterUsuarioLogado } from "../../utils/auth";
+import { useToast } from "../../../hooks/useToast";
 import "./ModalReservaSala.css";
 
 const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
   const [data, setData] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
+  const toast = useToast();
 
   const handleReservar = async () => {
     if (!data) {
       setErro("Por favor, selecione uma data");
+      toast.warning("Por favor, selecione uma data");
       return;
     }
 
@@ -24,7 +27,6 @@ const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
       const usuarioLogado = obterUsuarioLogado();
       console.log("[ModalReservaSala] Usuario logado:", usuarioLogado);
       
-      // Tentar diferentes nomes de campo para o ID do usuário
       const usuarioId = usuarioLogado?.idUsuario || usuarioLogado?.id || usuarioLogado?.usuarioId;
       
       console.log("[ModalReservaSala] usuarioId extraído:", usuarioId);
@@ -32,13 +34,17 @@ const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
       console.log("[ModalReservaSala] data selecionada:", data);
 
       if (!usuarioId) {
-        setErro("Usuário não autenticado. Faça login novamente.");
+        const msg = "Usuário não autenticado. Faça login novamente.";
+        setErro(msg);
+        toast.error(msg);
         setCarregando(false);
         return;
       }
 
       if (!salaId) {
-        setErro("Erro: ID da sala não fornecido");
+        const msg = "Erro: ID da sala não fornecido";
+        setErro(msg);
+        toast.error(msg);
         setCarregando(false);
         return;
       }
@@ -54,6 +60,7 @@ const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
       await criarReserva(reserva);
       
       console.log("[ModalReservaSala] Reserva criada com sucesso!");
+      toast.success("Reserva criada com sucesso!");
       
       if (onSuccess) {
         onSuccess();
@@ -62,7 +69,9 @@ const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
       onClose();
     } catch (erro) {
       console.error("[ModalReservaSala] Erro ao criar reserva:", erro);
-      setErro(erro.message || "Erro ao criar reserva. Tente novamente.");
+      const mensagem = erro.message || "Erro ao criar reserva. Tente novamente.";
+      setErro(mensagem);
+      toast.error(mensagem);
     } finally {
       setCarregando(false);
     }

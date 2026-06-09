@@ -8,21 +8,35 @@ import {
   deletarReserva,
   atualizarReserva,
 } from "../../../../service/reservaService";
+import { buscarTodasSalas } from "../../../../service/salaService";
+import CardSala from "../../CardSala/CardSala";
 import Modal from "../../../atomos/Modal/Modal";
 import InputDate from "../../../atomos/InputDate/InputDate";
 import Botao from "../../../atomos/Botao/Botao";
+import { useToast } from "../../../../hooks/useToast";
 
 const PaginaReservas = () => {
   const [reservas, setReservas] = useState([]);
+  const [salas, setSalas] = useState([]);
   const [reservaEmEdicao, setReservaEmEdicao] = useState(null);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [dataEdicao, setDataEdicao] = useState("");
+  const toast = useToast();
 
   const obterReservaId = (reserva) =>
     reserva?.id_reserva || reserva?.idReserva || reserva?.id;
 
-  const carregarReservas = async () => {
+  const obterSalaId = (sala) => sala?.id_sala || sala?.idSala || sala?.id;
+
+  const buscarSalaById = (salaId) => {
+    return salas.find((sala) => {
+      const id = obterSalaId(sala);
+      return Number(id) === Number(salaId);
+    });
+  };
+
+  const carregarDados = async () => {
     try {
       setCarregando(true);
       setErro("");
@@ -39,19 +53,26 @@ const PaginaReservas = () => {
         return;
       }
 
-      const data = await buscarReservasPorUsuario(userId);
-      console.log("[PaginaReservas] Reservas recebidas:", data);
-      setReservas(Array.isArray(data) ? data : []);
+      const [todasSalas, reservasData] = await Promise.all([
+        buscarTodasSalas(),
+        buscarReservasPorUsuario(userId),
+      ]);
+
+      console.log("[PaginaReservas] Salas recebidas:", todasSalas);
+      console.log("[PaginaReservas] Reservas recebidas:", reservasData);
+
+      setSalas(Array.isArray(todasSalas) ? todasSalas : []);
+      setReservas(Array.isArray(reservasData) ? reservasData : []);
     } catch (fetchError) {
       console.error(fetchError);
-      setErro(fetchError.message || "Erro ao buscar reservas");
+      setErro(fetchError.message || "Erro ao buscar dados");
     } finally {
       setCarregando(false);
     }
   };
 
   useEffect(() => {
-    carregarReservas();
+    carregarDados();
   }, []);
 
   const iniciarEdicao = (reserva) => {
@@ -74,10 +95,11 @@ const PaginaReservas = () => {
       setReservas((prev) =>
         prev.filter((r) => obterReservaId(r) !== id)
       );
-      alert("Reserva excluída com sucesso!");
+      toast.success("Reserva excluída com sucesso!");
     } catch (deleteError) {
       console.error(deleteError);
-      alert(deleteError.message || "Erro ao excluir reserva");
+      const mensagem = deleteError.message || "Erro ao excluir reserva";
+      toast.error(mensagem);
     }
   };
 
@@ -85,7 +107,7 @@ const PaginaReservas = () => {
     event.preventDefault();
 
     if (!dataEdicao) {
-      alert("Por favor, selecione uma data");
+      toast.warning("Por favor, selecione uma data");
       return;
     }
 
@@ -110,10 +132,11 @@ const PaginaReservas = () => {
       );
       setReservaEmEdicao(null);
       setDataEdicao("");
-      alert("Reserva atualizada com sucesso!");
+      toast.success("Reserva atualizada com sucesso!");
     } catch (updateError) {
       console.error(updateError);
-      alert(updateError.message || "Erro ao atualizar reserva");
+      const mensagem = updateError.message || "Erro ao atualizar reserva";
+      toast.error(mensagem);
     }
   };
 
@@ -166,45 +189,47 @@ const PaginaReservas = () => {
         ) : (
           <div className="pagina-reservas_container">
             {Array.isArray(reservas) && reservas.length > 0 ? (
-              <table className="pagina-reservas_table">
-                <thead>
-                  <tr>
-                    <th>Sala ID</th>
-                    <th>Data da Reserva</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {reservas.map((reserva) => {
-                    const reservaId = obterReservaId(reserva);
-                    return (
-                      <tr key={reservaId}>
-                        <td>
-                          {reserva.salaId ||
-                            reserva.sala_id ||
-                            reserva.sala?.id ||
-                            "-"}
-                        </td>
-                        <td>{formatarData(reserva.data)}</td>
-                        <td className="pagina-reservas_actions">
-                          <button
-                            className="btn-editar"
-                            onClick={() => iniciarEdicao(reserva)}
-                          >
-                            Editar
-                          </button>
-                          <button
-                            className="btn-excluir"
-                            onClick={() => handleExcluirReserva(reservaId)}
-                          >
-                            Excluir
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <div className="pagina-reservas_grid">
+                {reservas.map((reserva) => {
+                  const reservaId = obterReservaId(reserva);
+                  const salaId = reserva.salaId || reserva.sala_id;
+                  const sala = buscarSalaById(salaId);
+
+                  return (
+                    <div key={reservaId} className="pagina-reservas_item">
+                      <CardSala
+                        salaId={obterSalaId(sala)}
+                        tipoSala={sala?.tipoSala || sala?.tipo}
+                        tipo={sala?.tipo}
+                        nome={sala?.nome}
+                        descricao={sala?.descricao}
+                        capacidade={sala?.capacidade}
+                        preco={sala?.preco}
+                        rua={sala?.rua}
+                        numero={sala?.numero}
+                        bairro={sala?.bairro}
+                        cidade={sala?.cidade}
+                        estado={sala?.estado}
+                        cep={sala?.cep}
+                        imagem={sala?.imagem}
+                        mostrarBotaoReserva={false}
+                        actions={[
+                          {
+                            label: `Editar (${formatarData(reserva.data)})`,
+                            variant: "secondary",
+                            onClick: () => iniciarEdicao(reserva),
+                          },
+                          {
+                            label: "Excluir Reserva",
+                            variant: "danger",
+                            onClick: () => handleExcluirReserva(reservaId),
+                          },
+                        ]}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             ) : (
               <p className="pagina-reservas_empty">
                 Nenhuma reserva encontrada.
