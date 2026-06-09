@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "../../atomos/Modal/Modal";
 import InputDate from "../../atomos/InputDate/InputDate";
 import Botao from "../../atomos/Botao/Botao";
-import { criarReserva } from "../../../service/reservaService";
+import { criarReserva, buscarReservasPorSala } from "../../../service/reservaService";
 import { obterUsuarioLogado } from "../../utils/auth";
 import { useToast } from "../../../hooks/useToast";
 import "./ModalReservaSala.css";
@@ -13,6 +13,34 @@ const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
   const [erro, setErro] = useState("");
   const toast = useToast();
 
+  const isDataPassada = (dataStr) => {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    
+    const dataSelecionada = new Date(dataStr);
+    dataSelecionada.setHours(0, 0, 0, 0);
+    
+    return dataSelecionada < hoje;
+  };
+
+  const isDataReservada = async (salaId, dataStr) => {
+    try {
+      const reservasSala = await buscarReservasPorSala(salaId);
+      
+      if (!Array.isArray(reservasSala)) {
+        return false;
+      }
+
+      return reservasSala.some((reserva) => {
+        const reservaData = reserva.data || reserva.dataReserva || "";
+        return reservaData === dataStr;
+      });
+    } catch (erro) {
+      console.error("Erro ao buscar reservas da sala:", erro);
+      return false;
+    }
+  };
+
   const handleReservar = async () => {
     if (!data) {
       setErro("Por favor, selecione uma data");
@@ -20,10 +48,27 @@ const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
       return;
     }
 
+    if (isDataPassada(data)) {
+      const msg = "Não é possível reservar uma data no passado";
+      setErro(msg);
+      toast.error(msg);
+      return;
+    }
+
     setCarregando(true);
     setErro("");
 
     try {
+      // Validar se a data já está reservada
+      const dataJaReservada = await isDataReservada(salaId, data);
+      if (dataJaReservada) {
+        const msg = "Esta data já possui uma reserva";
+        setErro(msg);
+        toast.error(msg);
+        setCarregando(false);
+        return;
+      }
+
       const usuarioLogado = obterUsuarioLogado();
       console.log("[ModalReservaSala] Usuario logado:", usuarioLogado);
       

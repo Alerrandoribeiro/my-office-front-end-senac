@@ -4,6 +4,7 @@ import TemplatePaginaPadrao from "../../TemplatePaginaPadrao/TemplatePaginaPadra
 import AppBar from "../../AppBar/AppBar";
 import { obterUsuarioLogado } from "../../../utils/auth";
 import { buscarSalasDoUsuario, excluirSala, atualizarSala } from "../../../../service/salaService";
+import { buscarReservasPorSala } from "../../../../service/reservaService";
 import { buscarEnderecoPorCep } from "../../../../service/cepService";
 import CardSala from "../../CardSala/CardSala";
 import Modal from "../../../atomos/Modal/Modal";
@@ -68,11 +69,20 @@ const PaginaMinhasSalas = () => {
   };
 
   const handleExcluirSala = async (id) => {
-    if (!window.confirm("Deseja realmente excluir esta sala?")) {
-      return;
-    }
-
     try {
+      // Verificar se a sala tem reservas ativas
+      const reservasSala = await buscarReservasPorSala(id);
+      
+      if (reservasSala && reservasSala.length > 0) {
+        const msg = "Não é possível excluir uma sala que possui reservas";
+        toast.error(msg);
+        return;
+      }
+
+      if (!window.confirm("Deseja realmente excluir esta sala?")) {
+        return;
+      }
+
       await excluirSala(id);
       setSalas((prev) => prev.filter((s) => obterSalaId(s) !== id));
       toast.success("Sala excluída com sucesso!");
