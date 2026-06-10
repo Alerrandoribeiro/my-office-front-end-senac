@@ -38,7 +38,7 @@ const PaginaInicial = ({ children }) => {
             }}
             links={[
               {
-                to: "/",
+                to: "/landing-page",
                 texto: "Início",
                 icone: <FaHome />
               },

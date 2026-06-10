@@ -8,11 +8,16 @@ import PaginaMeuCadastro from "./components/organismo/Pages/PaginaMeuCadastro/Pa
 import PaginaTodasAsSalas from "./components/organismo/Pages/PaginaTodasAsSalas/PaginaTodasAsSalas";
 import PaginaMinhasSalas from "./components/organismo/Pages/PaginaMinhasSalas/PaginaMinhasSalas";
 import PaginaReservas from "./components/organismo/Pages/PaginaReservas/PaginaReservas";
+import LandingPage from "./components/organismo/Pages/PadinaLandingPage/PaginaLandingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <PaginaInicial />,
+  },
+  {
+    path: "/landing-page",
+    element: <LandingPage />,
   },
   {
     path: "/cadastro-sala",

@@ -46,7 +46,7 @@ const Pagina = () => {
   return (
     <AppBar
       logo={{
-        to: "/",
+        to: "/todas-salas",
         texto: "MyOffice"
       }}
       links={links}
