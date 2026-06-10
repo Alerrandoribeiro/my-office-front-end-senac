@@ -1,11 +1,13 @@
 import React from 'react'
+import FormularioLogin from '../../FormularioLogin/FormularioLogin'
+import PaginaInicial from '../PaginaInicial/PaginaInicial'
 
 const PaginaLogin = () => {
   return (
-    <div>
-      
-    </div>
-  )
+    <PaginaInicial>
+      <FormularioLogin />
+    </PaginaInicial>
+  );
 }
 
 export default PaginaLogin
