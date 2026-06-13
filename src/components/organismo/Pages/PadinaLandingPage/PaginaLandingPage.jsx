@@ -1,7 +1,12 @@
 import PaginaInicial from "../PaginaInicial/PaginaInicial";
+import { useNavigate } from "react-router-dom";
 import "./PaginaLandinPage.css";
 
 const PaginaLandingPage = () => {
+  const navigate = useNavigate();
+
+  const abrirCadastro = () => navigate('/cadastro-usuario');
+
   return (
     <PaginaInicial>
       <div className="landing-page">
@@ -137,11 +142,12 @@ const PaginaLandingPage = () => {
           <div className="container">
             <h2>Está pronto para transformar seu espaço em lucro?</h2>
 
-            <button className="cta-button">
+            <button className="cta-button" onClick={abrirCadastro}>
               Quero anunciar agora
             </button>
           </div>
         </section>
+        
       </div>
     </PaginaInicial>
   );
