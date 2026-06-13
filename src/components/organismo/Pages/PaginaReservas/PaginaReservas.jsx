@@ -13,7 +13,7 @@ import CardSala from "../../CardSala/CardSala";
 import Modal from "../../../atomos/Modal/Modal";
 import InputDate from "../../../atomos/InputDate/InputDate";
 import Botao from "../../../atomos/Botao/Botao";
-import { useToast } from "../../../../hooks/useToast";
+import { toast } from "react-toastify";
 
 const PaginaReservas = () => {
   const [reservas, setReservas] = useState([]);
@@ -22,7 +22,7 @@ const PaginaReservas = () => {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [dataEdicao, setDataEdicao] = useState("");
-  const toast = useToast();
+  
 
   const obterReservaId = (reserva) =>
     reserva?.id_reserva || reserva?.idReserva || reserva?.id;

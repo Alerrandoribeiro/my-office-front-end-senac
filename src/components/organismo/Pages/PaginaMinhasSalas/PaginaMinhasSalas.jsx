@@ -9,7 +9,7 @@ import { buscarEnderecoPorCep } from "../../../../service/cepService";
 import CardSala from "../../CardSala/CardSala";
 import Modal from "../../../atomos/Modal/Modal";
 import { formatarComMascara, MASCARA_CEP } from "../../../utils/mascaras";
-import { useToast } from "../../../../hooks/useToast";
+import { toast } from "react-toastify";
 
 const PaginaMinhasSalas = () => {
   const [salas, setSalas] = useState([]);
@@ -17,7 +17,6 @@ const PaginaMinhasSalas = () => {
   const [imagemPreview, setImagemPreview] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
-  const toast = useToast();
 
   const obterSalaId = (sala) => sala?.id_sala || sala?.idSala || sala?.id;
 

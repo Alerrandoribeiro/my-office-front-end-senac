@@ -6,6 +6,7 @@ const InputTexto = ({
   placeholder = "Digite aqui",
   cor = "padrao",
   aoAlterar,
+  aoBlur,
   largura = "250px",
   altura = "50px",
   desabilitado = false,
@@ -31,6 +32,7 @@ const InputTexto = ({
     type: tipo,
     placeholder,
     onChange: aoAlterar,
+    onBlur: aoBlur,
     disabled: desabilitado,
     style: {
       width: largura,

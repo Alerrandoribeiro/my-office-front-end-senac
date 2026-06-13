@@ -10,6 +10,7 @@ const InputComLabel = ({
   placeholder,
   cor,
   aoAlterar,
+  aoBlur,
   largura,
   altura,
   desabilitado,
@@ -28,6 +29,7 @@ const InputComLabel = ({
         placeholder={placeholder}
         cor={mensagemErro ? "erro" : cor}
         aoAlterar={aoAlterar}
+        aoBlur={aoBlur}
         largura={largura}
         altura={altura}
         desabilitado={desabilitado}

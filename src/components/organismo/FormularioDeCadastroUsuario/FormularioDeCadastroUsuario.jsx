@@ -12,11 +12,11 @@ import {
 } from "../../utils/validarFormulario";
 import { cadastrarUsuario } from "../../../service/usuarioService";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "../../../hooks/useToast";
+import { toast } from "react-toastify";
 
 const FormularioDeCadastroUsuario = () => {
   const navigate = useNavigate();
-  const toast = useToast();
+  
 
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -103,6 +103,7 @@ const FormularioDeCadastroUsuario = () => {
           placeholder="Digite seu nome"
           valor={nome}
           aoAlterar={(e) => setNome(e.target.value)}
+          obrigatorio
           largura="100%"
           mensagemErro={erroNome()}
         />
@@ -116,6 +117,7 @@ const FormularioDeCadastroUsuario = () => {
             setTelefone(formatarComMascara(e.target.value, MASCARA_TELEFONE))
           }
           largura="100%"
+          obrigatorio
           mensagemErro={erroTelefone()}
         />
 
@@ -126,6 +128,7 @@ const FormularioDeCadastroUsuario = () => {
           valor={email}
           aoAlterar={(e) => setEmail(e.target.value)}
           largura="100%"
+          obrigatorio
           mensagemErro={erroEmail()}
         />
 
@@ -136,6 +139,7 @@ const FormularioDeCadastroUsuario = () => {
           valor={senha}
           aoAlterar={(e) => setSenha(e.target.value)}
           largura="100%"
+          obrigatorio
           mensagemErro={erroSenha()}
         />
 
@@ -146,6 +150,7 @@ const FormularioDeCadastroUsuario = () => {
           valor={confirmarSenha}
           aoAlterar={(e) => setConfirmarSenha(e.target.value)}
           largura="100%"
+          obrigatorio
           mensagemErro={erroConfirmarSenha()}
         />
       </div>

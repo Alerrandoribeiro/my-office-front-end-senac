@@ -1,133 +1,105 @@
+/* AppBar styles — clean, responsive layout */
 .appbar {
   width: 100%;
-
   position: sticky;
   top: 0;
   z-index: 1000;
-
-  padding: 16px 32px;
-
+  padding: 8px 0;
   background: rgba(62, 127, 110, 0.95);
-
   backdrop-filter: blur(10px);
-
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .appbar-container {
   width: 100%;
-  max-width: 1250px;
-
-  margin: 0 auto;
-
-  display: flex;
+  margin: 0;
+  padding: 0; /* full-bleed container */
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* logo | nav | actions */
   align-items: center;
-  justify-content: space-between;
-
-  gap: 24px;
+  gap: 12px;
 }
 
-/* LOGO */
-
+/* logo area */
 .logo {
   text-decoration: none;
-
-  color: var(--cor-texto-claro);
-
+  color: var(--cor-texto-claro, #fff);
   font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.5px;
+  padding-left: 12px; /* small offset from left edge */
 }
 
-/* LINKS */
-
+/* nav (center column) */
 .nav-links {
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 18px;
-
-  flex: 1;
+  justify-self: center;
 }
 
 .nav-links a {
   display: flex;
   align-items: center;
-  justify-content: center;
-
   gap: 8px;
-
-  padding: 12px 18px;
-
-  border-radius: 14px;
-
+  padding: 10px 14px;
+  border-radius: 10px;
   text-decoration: none;
-
-  color: var(--cor-texto-claro);
-
+  color: var(--cor-texto-claro, #fff);
   font-size: 15px;
   font-weight: 500;
-
-  transition:
-    background 0.3s ease,
-    transform 0.3s ease,
-    color 0.3s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.nav-links a:hover {
-  background: rgba(255, 255, 255, 0.12);
+.nav-links a:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
 
-  transform: translateY(-2px);
-}
-
-.nav-links a svg {
-  font-size: 18px;
-}
-
-/* BOTÃO */
-
+/* actions (right column) */
 .appbar-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-right: 12px; /* small offset from right edge */
 }
 
-/* RESPONSIVO */
+/* toggle button for mobile */
+.appbar-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: 8px;
+}
 
+.appbar-toggle .bar { display: block; width: 20px; height: 2px; background: var(--cor-texto-claro, #fff); margin: 3px 0; transition: transform 0.2s ease, opacity 0.2s ease; }
+.appbar-toggle .bar.open:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.appbar-toggle .bar.open:nth-child(2) { opacity: 0; }
+.appbar-toggle .bar.open:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+/* Responsive behavior */
 @media (max-width: 950px) {
-  .appbar-container {
+  .appbar-container { grid-template-columns: auto 1fr auto; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: rgba(62,127,110,0.98);
+    padding: 12px 8px;
     flex-direction: column;
-
-    gap: 18px;
+    gap: 8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
   }
-
-  .nav-links {
-    flex-wrap: wrap;
-
-    gap: 14px;
-  }
-
-  .nav-links a {
-    padding: 10px 14px;
-
-    font-size: 14px;
-  }
+  .nav-links a { padding: 10px 12px; border-radius: 8px; width: 100%; justify-content: flex-start; }
+  .appbar-toggle { display: inline-flex; }
 }
 
-@media (max-width: 600px) {
-  .appbar {
-    padding: 16px 18px;
-  }
-
-  .nav-links {
-    width: 100%;
-  }
-
-  .nav-links a {
-    flex: 1;
-    min-width: 140px;
-  }
+@media (max-width: 480px) {
+  .logo { font-size: 20px; }
+  .appbar-actions { padding-right: 8px; }
 }

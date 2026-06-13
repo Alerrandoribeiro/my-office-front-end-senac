@@ -27,7 +27,7 @@ async function parseResponse(response) {
 }
 
 function formatErrorMessage(errorPayload) {
-  if (!errorPayload && errorPayload !== 0) {
+  if (errorPayload === null || errorPayload === undefined) {
     return "Resposta de erro inválida";
   }
 
@@ -36,7 +36,25 @@ function formatErrorMessage(errorPayload) {
   }
 
   if (typeof errorPayload === "object") {
-    return JSON.stringify(errorPayload, null, 2);
+    // Common API error shapes: { message }, { error }, { erro }, { status, error, path }
+    if (errorPayload.message) return String(errorPayload.message);
+    if (errorPayload.msg) return String(errorPayload.msg);
+    if (errorPayload.error) return typeof errorPayload.error === "string" ? errorPayload.error : JSON.stringify(errorPayload.error);
+    if (errorPayload.erro) return String(errorPayload.erro);
+    if (errorPayload.status && errorPayload.error) return `${errorPayload.status} - ${errorPayload.error}`;
+
+    // Fallback: try to pick useful keys
+    const keysToTry = ["detail", "details", "descricao", "description"];
+    for (const k of keysToTry) {
+      if (errorPayload[k]) return String(errorPayload[k]);
+    }
+
+    // As a last resort, stringify compactly (single line)
+    try {
+      return JSON.stringify(errorPayload);
+    } catch (e) {
+      return String(errorPayload);
+    }
   }
 
   return String(errorPayload);

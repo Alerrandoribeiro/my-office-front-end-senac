@@ -11,11 +11,10 @@ import {
 import { salvarUsuarioLogado, obterUsuarioLogado } from "../../utils/auth";
 import { autenticarUsuario } from "../../../service/usuarioService";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "../../../hooks/useToast";
+import { toast } from "react-toastify";
 
 const FormularioLogin = () => {
   const navigate = useNavigate();
-  const toast = useToast();
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -50,6 +49,16 @@ const FormularioLogin = () => {
   };
 
   const fazerLogin = async () => {
+    // validar campos localmente e exibir mensagens via toast
+    const mensagemEmail = erroEmail();
+    const mensagemSenha = erroSenha();
+
+    if (mensagemEmail || mensagemSenha) {
+      if (mensagemEmail) toast.error(mensagemEmail);
+      if (mensagemSenha) toast.error(mensagemSenha);
+      return;
+    }
+
     try {
       const resultado = await autenticarUsuario({ email, senha });
       console.debug("Login response:", resultado);
@@ -64,7 +73,8 @@ const FormularioLogin = () => {
       navigate("/minhas-salas");
     } catch (err) {
       console.error(err);
-      toast.error("Erro ao autenticar: " + (err.message || "Tente novamente"));
+      const msg = err?.message || "Erro ao autenticar. Verifique suas credenciais e tente novamente.";
+      toast.error(msg);
     }
   };
 
@@ -84,8 +94,13 @@ const FormularioLogin = () => {
           placeholder="Digite seu email"
           valor={email}
           aoAlterar={(e) => setEmail(e.target.value)}
+          obrigatorio
+          aoBlur={() => {
+            const msg = erroEmail();
+            if (msg) toast.error(msg);
+          }}
           largura="100%"
-          mensagemErro={erroEmail()}
+          mensagemErro={""}
         />
 
         <InputComLabel
@@ -94,8 +109,13 @@ const FormularioLogin = () => {
           placeholder="Digite sua senha"
           valor={senha}
           aoAlterar={(e) => setSenha(e.target.value)}
+          obrigatorio
+          aoBlur={() => {
+            const msg = erroSenha();
+            if (msg) toast.error(msg);
+          }}
           largura="100%"
-          mensagemErro={erroSenha()}
+          mensagemErro={""}
         />
       </div>
 

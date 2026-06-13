@@ -8,7 +8,7 @@ import CardSala from "../CardSala/CardSala";
 import { buscarEnderecoPorCep } from "../../../service/cepService";
 import { cadastrarSala } from "../../../service/salaService";
 import { obterUsuarioLogado } from "../../utils/auth";
-import { useToast } from "../../../hooks/useToast";
+import { toast } from "react-toastify";
 
 import {
     MASCARA_CEP,
@@ -30,7 +30,7 @@ const FormularioDeCadastroDeSala = () => {
     const [imagemPreview, setImagemPreview] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
-    const toast = useToast();
+    
 
     const limparCampos = () => {
         setCep("");

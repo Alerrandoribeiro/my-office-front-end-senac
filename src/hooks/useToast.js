@@ -1,17 +1,12 @@
-import { useContext } from "react";
-import { ToastContext } from "../context/ToastContext";
+import { toast as toastify } from 'react-toastify';
 
 export const useToast = () => {
-  const context = useContext(ToastContext);
-  
-  if (!context) {
-    throw new Error("useToast must be used within a ToastProvider");
-  }
-
   return {
-    success: (message, duration) => context.addToast(message, "success", duration),
-    error: (message, duration) => context.addToast(message, "error", duration),
-    warning: (message, duration) => context.addToast(message, "warning", duration),
-    info: (message, duration) => context.addToast(message, "info", duration),
+    success: (msg, opts) => toastify.success(msg, opts),
+    error: (msg, opts) => toastify.error(msg, opts),
+    info: (msg, opts) => toastify.info(msg, opts),
+    warning: (msg, opts) => toastify.warn(msg, opts),
   };
 };
+
+export default useToast;

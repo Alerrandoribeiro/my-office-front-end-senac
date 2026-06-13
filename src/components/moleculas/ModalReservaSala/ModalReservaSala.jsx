@@ -4,14 +4,14 @@ import InputDate from "../../atomos/InputDate/InputDate";
 import Botao from "../../atomos/Botao/Botao";
 import { criarReserva, buscarReservasPorSala } from "../../../service/reservaService";
 import { obterUsuarioLogado } from "../../utils/auth";
-import { useToast } from "../../../hooks/useToast";
+import { toast } from "react-toastify";
 import "./ModalReservaSala.css";
 
 const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
   const [data, setData] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
-  const toast = useToast();
+  
 
   const isDataPassada = (dataStr) => {
     const hoje = new Date();
