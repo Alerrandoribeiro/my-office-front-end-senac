@@ -73,7 +73,9 @@ const FormularioLogin = () => {
       navigate("/minhas-salas");
     } catch (err) {
       console.error(err);
-      const msg = err?.message || "Erro ao autenticar. Verifique suas credenciais e tente novamente.";
+      const raw = err?.message || "Erro ao autenticar. Verifique suas credenciais e tente novamente.";
+      const isAuthError = /unauthorized|invalid credentials|email ou senha|login inválido/i.test(raw);
+      const msg = isAuthError ? "Login inválido" : raw;
       toast.error(msg);
     }
   };
