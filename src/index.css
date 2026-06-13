@@ -42,3 +42,52 @@ body,
  
   --cor-cinza: #99a7bb;
  }
+
+/* Specific rules for react-toastify to avoid layout conflicts */
+.Toastify__toast-container {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  right: 12px !important;
+  left: auto !important;
+  pointer-events: none;
+}
+
+/* support both top-right and bottom-right placements */
+.Toastify__toast-container--top-right {
+  top: 12px !important;
+  bottom: auto !important;
+}
+
+.Toastify__toast-container--bottom-right {
+  bottom: 12px !important;
+  top: auto !important;
+}
+
+.Toastify__toast-container .Toastify__toast {
+  pointer-events: auto;
+  max-width: 360px !important;
+  width: auto !important;
+  box-sizing: border-box;
+  z-index: 2147483647 !important;
+}
+
+/* Make sure toast variants render above overlays */
+.Toastify__toast--default,
+.Toastify__toast--success,
+.Toastify__toast--error,
+.Toastify__toast--info,
+.Toastify__toast--warning {
+  z-index: 2147483647 !important;
+}
+
+/* Backwards-compatible selector: some versions render a root <section class="Toastify"> */
+.Toastify {
+  position: fixed !important;
+  top: 12px !important;
+  right: 12px !important;
+  left: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: auto !important;
+  z-index: 2147483647 !important;
+}

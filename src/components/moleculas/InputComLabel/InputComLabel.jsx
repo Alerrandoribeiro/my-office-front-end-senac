@@ -27,7 +27,7 @@ const InputComLabel = ({
         valor={valor}
         tipo={tipo}
         placeholder={placeholder}
-        cor={mensagemErro ? "erro" : cor}
+        cor={cor}
         aoAlterar={aoAlterar}
         aoBlur={aoBlur}
         largura={largura}
@@ -36,7 +36,7 @@ const InputComLabel = ({
       />
 
       {mensagemErro && (
-        <span className="input-com-label_erro">{mensagemErro}</span>
+        <span className="input-com-label_helper">{mensagemErro}</span>
       )}
     </div>
   );

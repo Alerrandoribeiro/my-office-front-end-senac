@@ -49,13 +49,10 @@ const FormularioLogin = () => {
   };
 
   const fazerLogin = async () => {
-    // validar campos localmente e exibir mensagens via toast
+    // validar campos localmente (mensagens serão exibidas abaixo dos inputs)
     const mensagemEmail = erroEmail();
     const mensagemSenha = erroSenha();
-
     if (mensagemEmail || mensagemSenha) {
-      if (mensagemEmail) toast.error(mensagemEmail);
-      if (mensagemSenha) toast.error(mensagemSenha);
       return;
     }
 
@@ -75,7 +72,7 @@ const FormularioLogin = () => {
       console.error(err);
       const raw = err?.message || "Erro ao autenticar. Verifique suas credenciais e tente novamente.";
       const isAuthError = /unauthorized|invalid credentials|email ou senha|login inválido/i.test(raw);
-      const msg = isAuthError ? "Login inválido" : raw;
+      const msg = isAuthError ? "Login inválido!" : raw;
       toast.error(msg);
     }
   };
@@ -97,12 +94,8 @@ const FormularioLogin = () => {
           valor={email}
           aoAlterar={(e) => setEmail(e.target.value)}
           obrigatorio
-          aoBlur={() => {
-            const msg = erroEmail();
-            if (msg) toast.error(msg);
-          }}
           largura="100%"
-          mensagemErro={""}
+          mensagemErro={erroEmail()}
         />
 
         <InputComLabel
@@ -112,12 +105,8 @@ const FormularioLogin = () => {
           valor={senha}
           aoAlterar={(e) => setSenha(e.target.value)}
           obrigatorio
-          aoBlur={() => {
-            const msg = erroSenha();
-            if (msg) toast.error(msg);
-          }}
           largura="100%"
-          mensagemErro={""}
+          mensagemErro={erroSenha()}
         />
       </div>
 

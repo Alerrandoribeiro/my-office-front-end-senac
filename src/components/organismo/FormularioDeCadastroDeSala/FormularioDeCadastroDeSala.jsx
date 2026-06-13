@@ -321,6 +321,7 @@ const FormularioDeCadastroDeSala = () => {
                     estado={estado}
                     cep={cep}
                     imagem={imagemPreview}
+                    mostrarBotaoReserva={false}
                 />
             </div>
         </div>

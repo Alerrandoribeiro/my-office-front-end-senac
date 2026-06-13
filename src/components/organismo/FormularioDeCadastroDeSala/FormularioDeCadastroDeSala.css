@@ -2,7 +2,7 @@
     width: 100%;
     max-width: 900px;
     margin: 24px auto;
-    padding: 22px;
+    padding: 25px;
 
     background: #ffffff;
     border: 1px solid rgba(15, 23, 42, 0.08);
@@ -160,7 +160,8 @@
 
 .upload-error {
     font-size: 13px;
-    color: #dc2626;
+    color: var(--cor-texto-cinza);
+    margin-top: 4px;
 }
 
 .formulario-cadastro-sala_campos input,

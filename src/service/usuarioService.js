@@ -73,7 +73,7 @@ export async function autenticarUsuario(credentials) {
     // Handle common authentication error explicitly
     if (response.status === 401) {
       // Return a concise, user-friendly message for unauthorized
-      throw new Error("Login inválido");
+      throw new Error("unauthorized");
     }
 
     const errorPayload = await parseResponse(response);
