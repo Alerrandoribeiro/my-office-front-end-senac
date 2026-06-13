@@ -70,6 +70,14 @@ export async function autenticarUsuario(credentials) {
   });
 
   if (!response.ok) {
+    // Handle common authentication error explicitly
+    if (response.status === 401) {
+      // Try to extract a concise message from the payload, otherwise use a friendly default
+      const payload = await parseResponse(response).catch(() => null);
+      const friendly = payload && payload.error ? String(payload.error) : "Email ou senha inválidos";
+      throw new Error(friendly);
+    }
+
     const errorPayload = await parseResponse(response);
     const errorText = formatErrorMessage(errorPayload);
     throw new Error(errorText || `Erro ao autenticar usuário (${response.status})`);
