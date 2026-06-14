@@ -1,0 +1,97 @@
+.quem-somos {
+  width: 100%;
+  background: var(--cor-fundo-padrao);
+  color: var(--cor-texto-padrao);
+}
+
+
+.section {
+  margin-bottom: 80px;
+}
+
+.title {
+  color: var(--cor-primaria);
+  font-size: 2rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.text {
+  color: var(--cor-texto-cinza);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--cor-secundaria);
+  margin: 50px 0;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+.icon {
+  min-width: 70px;
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--cor-primaria);
+  color: var(--cor-texto-claro);
+
+  font-size: 1.8rem;
+}
+
+.cardTitle {
+  color: var(--cor-primaria);
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.cardText {
+  color: var(--cor-texto-cinza);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 50px 0;
+  }
+
+  .section {
+    margin-bottom: 50px;
+  }
+
+  .title {
+    font-size: 1.7rem;
+  }
+
+  .text {
+    font-size: 1rem;
+  }
+
+  .valuesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 30px;
+  }
+
+  .icon {
+    min-width: 60px;
+    width: 60px;
+    height: 60px;
+  }
+}

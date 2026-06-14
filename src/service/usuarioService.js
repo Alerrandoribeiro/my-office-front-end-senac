@@ -43,13 +43,10 @@ function formatErrorMessage(errorPayload) {
     if (errorPayload.erro) return String(errorPayload.erro);
     if (errorPayload.status && errorPayload.error) return `${errorPayload.status} - ${errorPayload.error}`;
 
-    // Fallback: try to pick useful keys
     const keysToTry = ["detail", "details", "descricao", "description"];
     for (const k of keysToTry) {
       if (errorPayload[k]) return String(errorPayload[k]);
     }
-
-    // As a last resort, stringify compactly (single line)
     try {
       return JSON.stringify(errorPayload);
     } catch (e) {
@@ -70,9 +67,7 @@ export async function autenticarUsuario(credentials) {
   });
 
   if (!response.ok) {
-    // Handle common authentication error explicitly
     if (response.status === 401) {
-      // Return a concise, user-friendly message for unauthorized
       throw new Error("unauthorized");
     }
 

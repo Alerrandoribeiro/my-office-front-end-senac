@@ -9,6 +9,7 @@ import PaginaTodasAsSalas from "./components/organismo/Pages/PaginaTodasAsSalas/
 import PaginaMinhasSalas from "./components/organismo/Pages/PaginaMinhasSalas/PaginaMinhasSalas";
 import PaginaReservas from "./components/organismo/Pages/PaginaReservas/PaginaReservas";
 import LandingPage from "./components/organismo/Pages/PadinaLandingPage/PaginaLandingPage";
+import PaginaQuemSomos from "./components/organismo/Pages/PaginaQuemSomos/PaginaQuemSomos";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/landing-page",
     element: <LandingPage />,
+  },
+  {
+    path: "/quem-somos",
+    element: <PaginaQuemSomos />,
   },
   {
     path: "/cadastro-sala",

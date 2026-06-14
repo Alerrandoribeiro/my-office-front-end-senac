@@ -33,7 +33,7 @@ const PaginaInicial = ({ children }) => {
         appbar={
           <AppBar
             logo={{
-              to: "/",
+              to: "/todas-salas",
               texto: "MyOffice"
             }}
             links={[
