@@ -6,8 +6,13 @@ import { criarReserva, buscarReservasPorSala } from "../../../service/reservaSer
 import { obterUsuarioLogado } from "../../utils/auth";
 import { toast } from "react-toastify";
 import "./ModalReservaSala.css";
+import { useNavigate } from "react-router-dom";
+
 
 const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
+ 
+  const navigate = useNavigate();
+
   const [data, setData] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
@@ -80,6 +85,7 @@ const ModalReservaSala = ({ salaId, onClose, onSuccess }) => {
 
       if (!usuarioId) {
         const msg = "Usuário não autenticado. Faça login novamente.";
+        navigate("/login")
         setErro(msg);
         toast.error(msg);
         setCarregando(false);
