@@ -28,7 +28,6 @@ const CardSala = ({
 }) => {
   const [mostrarModalReserva, setMostrarModalReserva] = useState(false);
   
-  // Tenta encontrar o ID da sala em diferentes nomes de propriedade
   const obterSalaId = () => salaId || idSala || id || id_sala || props.id_sala;
   const salaIdFinal = obterSalaId();
   

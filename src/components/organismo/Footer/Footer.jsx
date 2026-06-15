@@ -29,7 +29,6 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* Novidades */}
                     <div className="footer-column">
                         <h3>Novidades</h3>
 
@@ -49,7 +48,6 @@ const Footer = () => {
                         </form>
                     </div>
 
-                    {/* Redes Sociais */}
                     <div className="footer-column">
                         <h3>Redes Sociais</h3>
 

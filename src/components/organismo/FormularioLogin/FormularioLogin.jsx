@@ -49,7 +49,6 @@ const FormularioLogin = () => {
   };
 
   const fazerLogin = async () => {
-    // validar campos localmente (mensagens serão exibidas abaixo dos inputs)
     const mensagemEmail = erroEmail();
     const mensagemSenha = erroSenha();
     if (mensagemEmail || mensagemSenha) {

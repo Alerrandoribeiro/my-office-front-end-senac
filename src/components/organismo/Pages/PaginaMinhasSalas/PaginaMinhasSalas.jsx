@@ -69,7 +69,6 @@ const PaginaMinhasSalas = () => {
 
   const handleExcluirSala = async (id) => {
     try {
-      // Verificar se a sala tem reservas ativas
       const reservasSala = await buscarReservasPorSala(id);
       
       if (reservasSala && reservasSala.length > 0) {

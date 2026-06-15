@@ -27,7 +27,6 @@
   line-height: 1.1;
 }
 
-/* neutral helper text style (non-error) */
 .input-com-label_helper {
   font-size: 13px;
   color: var(--cor-texto-cinza);
