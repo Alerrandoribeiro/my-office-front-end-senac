@@ -12,7 +12,7 @@ export async function cadastrarUsuario(usuario) {
   });
 
   if (!response.ok) {
-    throw new Error("Erro ao cadastrar usuário");
+    throw new Error("Usuário já cadastrado!");
   }
 
   return response.json();

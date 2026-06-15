@@ -78,7 +78,7 @@ const FormularioDeCadastroUsuario = () => {
       navigate("/login");
     } catch (error) {
       console.error(error);
-      toast.error(error.message || "Erro ao cadastrar usuário!");
+      toast.error(error.message || "Usuário já cadastrado!");
     }
   };
 
