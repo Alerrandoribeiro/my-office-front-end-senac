@@ -14,8 +14,12 @@ import {
     MASCARA_CEP,
     formatarComMascara
 } from "../../utils/mascaras";
+import { useNavigate } from "react-router-dom";
 
 const FormularioDeCadastroDeSala = () => {
+
+    const navigate = useNavigate();
+
     const [cep, setCep] = useState("");
     const [estado, setEstado] = useState("");
     const [cidade, setCidade] = useState("");
@@ -129,8 +133,9 @@ const FormularioDeCadastroDeSala = () => {
             };
 
             await cadastrarSala(salaPayload);
-            toast.success("Cadastro realizado com sucesso!");
+            toast.success("Sala cadastrada com sucesso!");
             limparCampos();
+            navigate("/minhas-salas");
         } catch (error) {
             toast.error("Erro ao cadastrar sala.");
             console.error(error);

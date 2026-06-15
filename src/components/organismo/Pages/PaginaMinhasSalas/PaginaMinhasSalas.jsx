@@ -374,7 +374,7 @@ const PaginaMinhasSalas = () => {
               })
             ) : (
               <p className="pagina-minhas-salas_empty">
-                Nenhuma sala encontrada ou resposta inválida da API.
+                Nenhuma sala cadastrada.
               </p>
             )}
           </div>

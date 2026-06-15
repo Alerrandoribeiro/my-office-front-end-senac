@@ -73,7 +73,7 @@ const FormularioDeCadastroUsuario = () => {
       const resposta = await cadastrarUsuario(usuario);
       console.log(resposta);
 
-      toast.success("Cadastro realizado com sucesso!");
+      toast.success("Usuário cadastrado com sucesso!");
       limparCampos();
       navigate("/login");
     } catch (error) {
