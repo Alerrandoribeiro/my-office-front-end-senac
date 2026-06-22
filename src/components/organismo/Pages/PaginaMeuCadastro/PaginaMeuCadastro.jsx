@@ -28,7 +28,7 @@ const PaginaMeuCadastro = () => {
         <div className="pagina-meu-cadastro_card">
           <div className="pagina-meu-cadastro_item">
             <span className="pagina-meu-cadastro_label">Nome</span>
-            <span>{usuario.nome || usuario.name || "-"}</span>
+            <span>{usuario.nome || "-"}</span>
           </div>
           <div className="pagina-meu-cadastro_item">
             <span className="pagina-meu-cadastro_label">Email</span>
@@ -36,11 +36,7 @@ const PaginaMeuCadastro = () => {
           </div>
           <div className="pagina-meu-cadastro_item">
             <span className="pagina-meu-cadastro_label">Telefone</span>
-            <span>{usuario.telefone || usuario.phone || "-"}</span>
-          </div>
-          <div className="pagina-meu-cadastro_item">
-            <span className="pagina-meu-cadastro_label">ID</span>
-            <span>{usuario.idUsuario || usuario.id || "-"}</span>
+            <span>{usuario.telefone || "-"}</span>
           </div>
         </div>
       </div>
