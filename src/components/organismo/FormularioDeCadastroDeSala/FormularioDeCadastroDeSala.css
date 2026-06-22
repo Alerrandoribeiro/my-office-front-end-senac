@@ -52,7 +52,7 @@
 .formulario-cadastro-sala_grid {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    gap: 80px; 
+    gap: 80px; /* increased horizontal gap for more breathing room */
     align-items: start;
 }
 
@@ -64,6 +64,8 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding-top: 5px;
+
 }
 
 .card-sala_root {
@@ -84,7 +86,7 @@
     grid-column: 1 / -1;
     display: flex;
     flex-direction: column;
-    gap: 18px; 
+    gap: 18px; /* more vertical spacing between upload label, input and note */
 }
 
 .upload-label-row {
@@ -112,7 +114,7 @@
     align-items: center;
     gap: 16px;
     width: 100%;
-    min-height: 90px; 
+    min-height: 90px; /* taller box to separate from preview image */
     padding: 16px 18px;
     border-radius: 18px;
     background: #f8fafc;
@@ -158,6 +160,7 @@
     word-break: break-word;
 }
 
+/* small offset to push the preview card slightly lower for visual separation */
 .card-sala_root {
     margin-top: 8px;
 }

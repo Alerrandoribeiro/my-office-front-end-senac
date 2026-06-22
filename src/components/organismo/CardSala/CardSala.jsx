@@ -60,7 +60,7 @@ const CardSala = ({
           />
         </div>
         <div className="card-sala_body">
-          <span className="card-sala_tag">Prévia da Sala</span>
+          <span className="card-sala_tag">Detalhes da Sala</span>
           <h2 className="card-sala_title">
             {tipoSala || tipo || nome || "Sala personalizada"}
           </h2>
