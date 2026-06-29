@@ -1,8 +1,7 @@
-const API_URL = "http://localhost:8080/api/usuarios";
-const API_LOGIN_URL = "http://localhost:8080/api/usuarios/login";
-const JSON_HEADERS = {
-  "Content-Type": "application/json",
-};
+import { BASE_API_ORIGIN, API_PREFIX, JSON_HEADERS } from "./apiConfig";
+
+const API_URL = `${BASE_API_ORIGIN}${API_PREFIX}/usuarios`;
+const API_LOGIN_URL = `${API_URL}/login`;
 
 export async function cadastrarUsuario(usuario) {
   const response = await fetch(API_URL, {

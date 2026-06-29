@@ -1,7 +1,6 @@
-const BASE_URL = "http://localhost:8080/api/reservas";
-const JSON_HEADERS = {
-  "Content-Type": "application/json",
-};
+import { BASE_API_ORIGIN, API_PREFIX, JSON_HEADERS } from "./apiConfig";
+
+const BASE_URL = `${BASE_API_ORIGIN}${API_PREFIX}/reservas`;
 
 export async function criarReserva(reserva) {
   const payload = {

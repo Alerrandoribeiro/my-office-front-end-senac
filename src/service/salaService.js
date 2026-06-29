@@ -1,7 +1,6 @@
-const BASE_URL = "http://localhost:8080/api/salas";
-const JSON_HEADERS = {
-  "Content-Type": "application/json",
-};
+import { BASE_API_ORIGIN, API_PREFIX, JSON_HEADERS } from "./apiConfig";
+
+const BASE_URL = `${BASE_API_ORIGIN}${API_PREFIX}/salas`;
 
 export async function buscarTodasSalas() {
   const data = await request();
