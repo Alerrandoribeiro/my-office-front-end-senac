@@ -8,13 +8,7 @@ const TemplatePaginaPadrao = ({children, appbar}) => {
         <div>
           {estaLogado() ? <AppBarLogado /> : appbar}
 
-          <main
-            style={{
-              padding: "20px",
-              maxWidth: "1200px",
-              margin: "0 auto",
-            }}
-          >
+          <main className="page-container">
             {children}
           </main>
 

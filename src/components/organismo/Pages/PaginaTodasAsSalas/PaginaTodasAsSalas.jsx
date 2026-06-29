@@ -13,11 +13,6 @@ const PaginaTodasAsSalas = () => {
     const buscarSalas = async () => {
       try {
         const data = await buscarTodasSalas();
-        console.log("[PaginaTodasAsSalas] Salas recebidas:", data);
-        if (data && data.length > 0) {
-          console.log("[PaginaTodasAsSalas] Primeira sala:", data[0]);
-          console.log("[PaginaTodasAsSalas] Chaves da primeira sala:", Object.keys(data[0]));
-        }
         setSalas(data);
       } catch (error) {
         console.error("Erro ao buscar salas:", error);
@@ -31,25 +26,23 @@ const PaginaTodasAsSalas = () => {
     <PaginaInicial>
       <div className="pagina-todas-salas_root">
         <div className="salas-grid">
-          {salas.map((sala) => {
-            return (
-              <CardSala
-                key={sala.idSala || sala.id || sala.id_sala}
-                salaId={sala.idSala || sala.id || sala.id_sala}
-                tipoSala={sala.tipoSala}
-                descricao={sala.descricao}
-                capacidade={sala.capacidade}
-                preco={sala.preco}
-                rua={sala.rua}
-                numero={sala.numero}
-                bairro={sala.bairro}
-                cidade={sala.cidade}
-                estado={sala.estado}
-                cep={sala.cep}
-                imagem={sala.imagem}
-              />
-            );
-          })}
+          {salas.map((sala) => (
+            <CardSala
+              key={sala.idSala}
+              salaId={sala.idSala}
+              tipoSala={sala.tipoSala}
+              descricao={sala.descricao}
+              capacidade={sala.capacidade}
+              preco={sala.preco}
+              rua={sala.rua}
+              numero={sala.numero}
+              bairro={sala.bairro}
+              cidade={sala.cidade}
+              estado={sala.estado}
+              cep={sala.cep}
+              imagem={sala.imagem}
+            />
+          ))}
         </div>
       </div>
     </PaginaInicial>

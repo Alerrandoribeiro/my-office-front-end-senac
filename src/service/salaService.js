@@ -1,4 +1,7 @@
 const BASE_URL = "http://localhost:8080/api/salas";
+const JSON_HEADERS = {
+  "Content-Type": "application/json",
+};
 
 async function parseResponse(response) {
   const contentType = response.headers.get("content-type") || "";
@@ -8,130 +11,113 @@ async function parseResponse(response) {
   return response.text();
 }
 
-function createError(message) {
-  return new Error(message || "Erro na requisição de sala");
+function createError(responsePayload) {
+  const rawMessage =
+    typeof responsePayload === "string"
+      ? responsePayload
+      : JSON.stringify(responsePayload);
+  return new Error(rawMessage || "Erro na requisição de sala");
 }
 
-function normalizarImagem(imagem) {
-  if (!imagem || typeof imagem !== "string") return imagem;
-
-  const valor = imagem.trim();
-  if (valor.startsWith("data:image/")) {
-    return valor;
+async function request(endpoint = "", options = {}) {
+  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+  if (!response.ok) {
+    const payload = await parseResponse(response);
+    throw createError(payload);
   }
-
-  if (/^https?:\/\//i.test(valor) || valor.startsWith("/")) {
-    return valor;
-  }
-
-  return `data:image/jpeg;base64,${valor}`;
+  return parseResponse(response);
 }
 
-function normalizarSala(sala) {
-  if (!sala || typeof sala !== "object") return sala;
+function normalizeImage(image) {
+  if (!image || typeof image !== "string") return image;
 
-  console.log("[normalizarSala] Sala recebida do backend:", sala);
-  console.log("[normalizarSala] Chaves disponíveis:", Object.keys(sala));
+  const value = image.trim();
+  if (value.startsWith("data:image/")) return value;
+  if (/^https?:\/\//i.test(value) || value.startsWith("/")) return value;
 
-  const tipoPadrao = sala.tipoSala || sala.tipo || sala.tipo_sala || "";
+  return `data:image/jpeg;base64,${value}`;
+}
+
+function normalizeRoomId(room) {
+  if (!room || typeof room !== "object") return undefined;
+  return room.id ?? room.idSala ?? room.id_sala;
+}
+
+function normalizeUserId(room) {
+  if (!room || typeof room !== "object") return undefined;
+  return (
+    room.usuarioId ??
+    room.idUsuario ??
+    room.usuario?.id ??
+    room.usuario?.idUsuario
+  );
+}
+
+function normalizeRoom(room) {
+  if (!room || typeof room !== "object") return room;
+
+  const id = normalizeRoomId(room);
+  const usuarioId = normalizeUserId(room);
+  const tipoSala = room.tipoSala ?? room.tipo ?? room.tipo_sala ?? "";
 
   return {
-    ...sala,
-    tipoSala: sala.tipoSala || sala.tipo || sala.tipo_sala || "",
-    tipo: sala.tipo || sala.tipoSala || sala.tipo_sala || "",
-    nome: sala.nome || tipoPadrao,
-    imagem: normalizarImagem(sala.imagem),
+    ...room,
+    id,
+    idSala: id,
+    id_sala: id,
+    usuarioId,
+    tipoSala,
+    tipo: room.tipo ?? room.tipoSala ?? room.tipo_sala ?? "",
+    nome: room.nome || tipoSala,
+    imagem: normalizeImage(room.imagem),
   };
 }
 
-function normalizarSalas(salas) {
-  if (!Array.isArray(salas)) return [];
-  return salas.map(normalizarSala);
+function normalizeRooms(rooms) {
+  if (!Array.isArray(rooms)) return [];
+  return rooms.map(normalizeRoom);
 }
 
 export async function buscarTodasSalas() {
-  const response = await fetch(BASE_URL);
-  if (!response.ok) {
-    const errorPayload = await parseResponse(response);
-    throw createError(typeof errorPayload === "string" ? errorPayload : JSON.stringify(errorPayload));
-  }
-  const data = await parseResponse(response);
-  const result = Array.isArray(data) ? data : data?.salas || [];
-  return normalizarSalas(result);
+  const data = await request();
+  const rooms = Array.isArray(data) ? data : data?.salas || [];
+  return normalizeRooms(rooms);
 }
 
-function filtrarSalasDoUsuario(salas, userId) {
-  return salas.filter((sala) => {
-    if (!sala || typeof sala !== "object") return false;
+function filterRoomsOfUser(rooms, userId) {
+  const id = Number(userId);
+  if (Number.isNaN(id)) return [];
 
-    return (
-      sala.usuarioId === userId ||
-      sala.idUsuario === userId ||
-      sala.usuario?.id === userId ||
-      sala.usuario?.idUsuario === userId ||
-      sala.usuario?.id === Number(userId) ||
-      sala.usuario?.idUsuario === Number(userId) ||
-      sala.usuarioId === Number(userId) ||
-      sala.idUsuario === Number(userId)
-    );
-  });
-}
-
-function temMetadadosDeProprietario(salas) {
-  return salas.some((sala) => {
-    if (!sala || typeof sala !== "object") return false;
-    return (
-      sala.usuarioId !== undefined ||
-      sala.idUsuario !== undefined ||
-      (sala.usuario && typeof sala.usuario === "object")
-    );
+  return rooms.filter((room) => {
+    const ownerId = Number(normalizeUserId(room));
+    return !Number.isNaN(ownerId) && ownerId === id;
   });
 }
 
 export async function buscarSalasDoUsuario(userId) {
-  const todasSalas = await buscarTodasSalas();
-  return filtrarSalasDoUsuario(todasSalas, userId);
+  const allRooms = await buscarTodasSalas();
+  return filterRoomsOfUser(allRooms, userId);
 }
 
 export async function excluirSala(salaId) {
-  const response = await fetch(`${BASE_URL}/${salaId}`, {
-    method: "DELETE",
-  });
-  if (!response.ok) {
-    const errorPayload = await parseResponse(response);
-    throw createError(typeof errorPayload === "string" ? errorPayload : JSON.stringify(errorPayload));
-  }
+  await request(`/${salaId}`, { method: "DELETE" });
   return true;
 }
 
 export async function atualizarSala(salaId, salaData) {
-  const response = await fetch(`${BASE_URL}/${salaId}`, {
+  const updated = await request(`/${salaId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: JSON_HEADERS,
     body: JSON.stringify(salaData),
   });
-  if (!response.ok) {
-    const errorPayload = await parseResponse(response);
-    throw createError(typeof errorPayload === "string" ? errorPayload : JSON.stringify(errorPayload));
-  }
-  const updated = await parseResponse(response);
-  return normalizarSala(updated);
+  return normalizeRoom(updated);
 }
 
 export async function cadastrarSala(salaData) {
-  const response = await fetch(BASE_URL, {
+  const created = await request("", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: JSON_HEADERS,
     body: JSON.stringify(salaData),
   });
-  if (!response.ok) {
-    const errorPayload = await parseResponse(response);
-    throw createError(typeof errorPayload === "string" ? errorPayload : JSON.stringify(errorPayload));
-  }
-  const created = await parseResponse(response);
-  return normalizarSala(created);
+  return normalizeRoom(created);
 }

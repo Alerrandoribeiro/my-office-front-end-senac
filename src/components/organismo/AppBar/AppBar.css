@@ -4,18 +4,24 @@
   top: 0;
   z-index: 1000;
   padding: 8px 0;
-  background: rgba(62, 127, 110, 0.95);
+  background: var(--cor-primaria-escura);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .appbar-container {
-  width: min(100%, 1200px);
+  width: min(100%, var(--layout-max-width));
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--layout-gutter);
   display: grid;
   grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.appbar-brand {
+  display: flex;
   align-items: center;
   gap: 12px;
 }
@@ -26,7 +32,6 @@
   font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  padding-left: 12px; 
 }
 
 .nav-links {

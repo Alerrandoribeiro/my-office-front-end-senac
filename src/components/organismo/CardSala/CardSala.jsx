@@ -28,14 +28,8 @@ const CardSala = ({
 }) => {
   const [mostrarModalReserva, setMostrarModalReserva] = useState(false);
   
-  const obterSalaId = () => salaId || idSala || id || id_sala || props.id_sala;
-  const salaIdFinal = obterSalaId();
-  
-  console.log("[CardSala] TODOS os props recebidos:", {
-    tipoSala, tipo, nome, descricao, capacidade, preco, rua, numero, bairro, cidade, estado, cep,
-    salaId, idSala, id, id_sala, ...props
-  });
-  console.log("[CardSala] salaIdFinal encontrado:", salaIdFinal);
+  const salaIdFinal = salaId || idSala || id || id_sala || props.id_sala;
+
   const getImagemSrc = (value) => {
     if (!value) return null;
     const trimmed = String(value).trim();

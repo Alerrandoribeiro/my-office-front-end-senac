@@ -10,7 +10,7 @@ const AppBar = ({ logo, links = [], actions }) => {
     <header className="appbar">
       <div className="appbar-container">
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div className="appbar-brand">
           <Link to={logo.to} className="logo">
             {logo.texto}
           </Link>

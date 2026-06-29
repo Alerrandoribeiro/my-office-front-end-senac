@@ -1,15 +1,12 @@
 .pagina-todas-salas_root {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    padding-top: 16px;
 }
 
 .salas-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
-    width: 100%;
     margin-top: 32px;
     align-items: stretch;
 }

@@ -36,7 +36,6 @@ function formatErrorMessage(errorPayload) {
   }
 
   if (typeof errorPayload === "object") {
-    // Common API error shapes: { message }, { error }, { erro }, { status, error, path }
     if (errorPayload.message) return String(errorPayload.message);
     if (errorPayload.msg) return String(errorPayload.msg);
     if (errorPayload.error) return typeof errorPayload.error === "string" ? errorPayload.error : JSON.stringify(errorPayload.error);
