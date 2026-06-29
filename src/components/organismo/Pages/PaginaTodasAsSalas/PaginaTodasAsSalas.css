@@ -1,8 +1,8 @@
 .pagina-todas-salas_root {
     width: 100%;
-    max-width: 1600px;
-    margin: 15px auto;
-    padding: 0 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .salas-grid {

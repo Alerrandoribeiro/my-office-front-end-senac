@@ -29,30 +29,28 @@ const PaginaTodasAsSalas = () => {
 
   return (
     <PaginaInicial>
-      <div className="salas-grid">
-        {salas.map((sala) => {
-          console.log("[PaginaTodasAsSalas] Sala completa:", sala);
-          console.log("[PaginaTodasAsSalas] Chaves da sala:", Object.keys(sala));
-          console.log("[PaginaTodasAsSalas] sala.idSala:", sala.idSala, "sala.id:", sala.id, "sala.id_sala:", sala.id_sala);
-          
-          return (
-          <CardSala
-            key={sala.idSala || sala.id || sala.id_sala}
-            salaId={sala.idSala || sala.id || sala.id_sala}
-            tipoSala={sala.tipoSala}
-            descricao={sala.descricao}
-            capacidade={sala.capacidade}
-            preco={sala.preco}
-            rua={sala.rua}
-            numero={sala.numero}
-            bairro={sala.bairro}
-            cidade={sala.cidade}
-            estado={sala.estado}
-            cep={sala.cep}
-            imagem={sala.imagem}
-          />
-          );
-        })}
+      <div className="pagina-todas-salas_root">
+        <div className="salas-grid">
+          {salas.map((sala) => {
+            return (
+              <CardSala
+                key={sala.idSala || sala.id || sala.id_sala}
+                salaId={sala.idSala || sala.id || sala.id_sala}
+                tipoSala={sala.tipoSala}
+                descricao={sala.descricao}
+                capacidade={sala.capacidade}
+                preco={sala.preco}
+                rua={sala.rua}
+                numero={sala.numero}
+                bairro={sala.bairro}
+                cidade={sala.cidade}
+                estado={sala.estado}
+                cep={sala.cep}
+                imagem={sala.imagem}
+              />
+            );
+          })}
+        </div>
       </div>
     </PaginaInicial>
   );

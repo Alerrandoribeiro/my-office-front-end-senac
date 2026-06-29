@@ -8,8 +8,9 @@
 }
 
 .footer-container {
-  max-width: 1000px;
+  width: min(100%, 1200px);
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .footer-grid {
