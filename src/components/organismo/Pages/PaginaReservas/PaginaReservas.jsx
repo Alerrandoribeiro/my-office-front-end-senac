@@ -199,8 +199,7 @@ const PaginaReservas = () => {
                     <div key={reservaId} className="pagina-reservas_item">
                       <CardSala
                         salaId={obterSalaId(sala)}
-                        tipoSala={sala?.tipoSala || sala?.tipo}
-                        tipo={sala?.tipo}
+                        tipoSala={sala?.tipoSala}
                         nome={sala?.nome}
                         descricao={sala?.descricao}
                         capacidade={sala?.capacidade}

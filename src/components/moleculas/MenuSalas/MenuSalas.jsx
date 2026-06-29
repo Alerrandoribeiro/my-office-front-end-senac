@@ -30,9 +30,9 @@ const MenuSalas = ({
     <div className="menu-salas_root">
       {salas.map((sala) => (
         <button
-          key={sala.idSala}
+          key={sala.id}
           className={`menu-salas_item ${
-            salaSelecionada === sala.idSala
+            salaSelecionada === sala.id
               ? "menu-salas_item-ativo"
               : ""
           }`}

@@ -28,8 +28,8 @@ const PaginaTodasAsSalas = () => {
         <div className="salas-grid">
           {salas.map((sala) => (
             <CardSala
-              key={sala.idSala}
-              salaId={sala.idSala}
+              key={sala.id}
+              salaId={sala.id}
               tipoSala={sala.tipoSala}
               descricao={sala.descricao}
               capacidade={sala.capacidade}

@@ -344,7 +344,6 @@ const PaginaMinhasSalas = () => {
                   key={salaId}
                   salaId={salaId}
                   tipoSala={sala.tipoSala}
-                  tipo={sala.tipo}
                   nome={sala.nome}
                   descricao={sala.descricao}
                   capacidade={sala.capacidade}

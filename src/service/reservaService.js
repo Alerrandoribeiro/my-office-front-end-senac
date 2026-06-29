@@ -3,38 +3,6 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-async function parseResponse(response) {
-  const contentType = response.headers.get("content-type") || "";
-  if (contentType.includes("application/json")) {
-    return response.json();
-  }
-  return response.text();
-}
-
-function createError(responsePayload) {
-  if (!responsePayload) {
-    return new Error("Erro na requisição de reserva");
-  }
-
-  const message =
-    typeof responsePayload === "string"
-      ? responsePayload
-      : responsePayload.message || responsePayload.error || JSON.stringify(responsePayload);
-
-  return new Error(message || "Erro na requisição de reserva");
-}
-
-async function request(endpoint = "", options = {}) {
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
-
-  if (!response.ok) {
-    const payload = await parseResponse(response);
-    throw createError(payload);
-  }
-
-  return parseResponse(response);
-}
-
 export async function criarReserva(reserva) {
   const payload = {
     usuarioId: Number(reserva.usuarioId),
@@ -86,4 +54,36 @@ export async function deletarReserva(id) {
     method: "DELETE",
     headers: JSON_HEADERS,
   });
+}
+
+async function parseResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+  return response.text();
+}
+
+function createError(responsePayload) {
+  if (!responsePayload) {
+    return new Error("Erro na requisição de reserva");
+  }
+
+  const message =
+    typeof responsePayload === "string"
+      ? responsePayload
+      : responsePayload.message || responsePayload.error || JSON.stringify(responsePayload);
+
+  return new Error(message || "Erro na requisição de reserva");
+}
+
+async function request(endpoint = "", options = {}) {
+  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+
+  if (!response.ok) {
+    const payload = await parseResponse(response);
+    throw createError(payload);
+  }
+
+  return parseResponse(response);
 }

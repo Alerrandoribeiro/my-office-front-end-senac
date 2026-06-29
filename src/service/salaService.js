@@ -3,6 +3,49 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
+export async function buscarTodasSalas() {
+  const data = await request();
+  const salas = Array.isArray(data) ? data : data?.salas || [];
+  return normalizarSalas(salas);
+}
+
+export async function buscarSalasDoUsuario(usuarioId) {
+  const todasSalas = await buscarTodasSalas();
+  return filtrarSalasDoUsuario(todasSalas, usuarioId);
+}
+
+export async function cadastrarSala(salaData) {
+  const criada = await request("", {
+    method: "POST",
+    headers: JSON_HEADERS,
+    body: JSON.stringify(salaData),
+  });
+  return normalizarSala(criada);
+}
+
+export async function atualizarSala(salaId, salaData) {
+  const atualizada = await request(`/${salaId}`, {
+    method: "PUT",
+    headers: JSON_HEADERS,
+    body: JSON.stringify(salaData),
+  });
+  return normalizarSala(atualizada);
+}
+
+export async function excluirSala(salaId) {
+  await request(`/${salaId}`, { method: "DELETE" });
+  return true;
+}
+
+async function request(endpoint = "", options = {}) {
+  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+  if (!response.ok) {
+    const payload = await parseResponse(response);
+    throw createError(payload);
+  }
+  return parseResponse(response);
+}
+
 async function parseResponse(response) {
   const contentType = response.headers.get("content-type") || "";
   if (contentType.includes("application/json")) {
@@ -19,105 +62,54 @@ function createError(responsePayload) {
   return new Error(rawMessage || "Erro na requisição de sala");
 }
 
-async function request(endpoint = "", options = {}) {
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
-  if (!response.ok) {
-    const payload = await parseResponse(response);
-    throw createError(payload);
-  }
-  return parseResponse(response);
+function normalizarImagem(imagem) {
+  if (!imagem || typeof imagem !== "string") return imagem;
+
+  const valor = imagem.trim();
+  if (valor.startsWith("data:image/")) return valor;
+  if (/^https?:\/\//i.test(valor) || valor.startsWith("/")) return valor;
+
+  return `data:image/jpeg;base64,${valor}`;
 }
 
-function normalizeImage(image) {
-  if (!image || typeof image !== "string") return image;
-
-  const value = image.trim();
-  if (value.startsWith("data:image/")) return value;
-  if (/^https?:\/\//i.test(value) || value.startsWith("/")) return value;
-
-  return `data:image/jpeg;base64,${value}`;
+function normalizarIdSala(sala) {
+  if (!sala || typeof sala !== "object") return undefined;
+  return sala.id ?? sala.idSala ?? sala.id_sala;
 }
 
-function normalizeRoomId(room) {
-  if (!room || typeof room !== "object") return undefined;
-  return room.id ?? room.idSala ?? room.id_sala;
+function normalizarIdUsuario(sala) {
+  if (!sala || typeof sala !== "object") return undefined;
+  return sala.usuarioId ?? sala.usuario?.id ?? sala.usuario?.idUsuario;
 }
 
-function normalizeUserId(room) {
-  if (!room || typeof room !== "object") return undefined;
-  return (
-    room.usuarioId ??
-    room.idUsuario ??
-    room.usuario?.id ??
-    room.usuario?.idUsuario
-  );
-}
+function normalizarSala(sala) {
+  if (!sala || typeof sala !== "object") return sala;
 
-function normalizeRoom(room) {
-  if (!room || typeof room !== "object") return room;
-
-  const id = normalizeRoomId(room);
-  const usuarioId = normalizeUserId(room);
-  const tipoSala = room.tipoSala ?? room.tipo ?? room.tipo_sala ?? "";
+  const id = normalizarIdSala(sala);
+  const usuarioId = normalizarIdUsuario(sala);
+  const tipoSala = sala.tipoSala ?? sala.tipo ?? sala.tipo_sala ?? "";
 
   return {
-    ...room,
+    ...sala,
     id,
-    idSala: id,
-    id_sala: id,
     usuarioId,
     tipoSala,
-    tipo: room.tipo ?? room.tipoSala ?? room.tipo_sala ?? "",
-    nome: room.nome || tipoSala,
-    imagem: normalizeImage(room.imagem),
+    nome: sala.nome || tipoSala,
+    imagem: normalizarImagem(sala.imagem),
   };
 }
 
-function normalizeRooms(rooms) {
-  if (!Array.isArray(rooms)) return [];
-  return rooms.map(normalizeRoom);
+function normalizarSalas(salas) {
+  if (!Array.isArray(salas)) return [];
+  return salas.map(normalizarSala);
 }
 
-export async function buscarTodasSalas() {
-  const data = await request();
-  const rooms = Array.isArray(data) ? data : data?.salas || [];
-  return normalizeRooms(rooms);
-}
-
-function filterRoomsOfUser(rooms, userId) {
-  const id = Number(userId);
+function filtrarSalasDoUsuario(salas, usuarioId) {
+  const id = Number(usuarioId);
   if (Number.isNaN(id)) return [];
 
-  return rooms.filter((room) => {
-    const ownerId = Number(normalizeUserId(room));
-    return !Number.isNaN(ownerId) && ownerId === id;
+  return salas.filter((sala) => {
+    const donoId = Number(normalizarIdUsuario(sala));
+    return !Number.isNaN(donoId) && donoId === id;
   });
-}
-
-export async function buscarSalasDoUsuario(userId) {
-  const allRooms = await buscarTodasSalas();
-  return filterRoomsOfUser(allRooms, userId);
-}
-
-export async function excluirSala(salaId) {
-  await request(`/${salaId}`, { method: "DELETE" });
-  return true;
-}
-
-export async function atualizarSala(salaId, salaData) {
-  const updated = await request(`/${salaId}`, {
-    method: "PUT",
-    headers: JSON_HEADERS,
-    body: JSON.stringify(salaData),
-  });
-  return normalizeRoom(updated);
-}
-
-export async function cadastrarSala(salaData) {
-  const created = await request("", {
-    method: "POST",
-    headers: JSON_HEADERS,
-    body: JSON.stringify(salaData),
-  });
-  return normalizeRoom(created);
 }

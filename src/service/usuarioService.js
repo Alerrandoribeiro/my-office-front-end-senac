@@ -4,30 +4,6 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-async function parseResponse(response) {
-  const contentType = response.headers.get("content-type") || "";
-  if (contentType.includes("application/json")) {
-    return response.json();
-  }
-  return response.text();
-}
-
-function createError(payload, fallbackMessage) {
-  if (!payload) {
-    return new Error(fallbackMessage);
-  }
-
-  if (typeof payload === "string") {
-    return new Error(payload);
-  }
-
-  if (payload.message) return new Error(String(payload.message));
-  if (payload.error) return new Error(String(payload.error));
-  if (payload.msg) return new Error(String(payload.msg));
-
-  return new Error(JSON.stringify(payload));
-}
-
 export async function cadastrarUsuario(usuario) {
   const response = await fetch(API_URL, {
     method: "POST",
@@ -60,4 +36,28 @@ export async function autenticarUsuario(credentials) {
   }
 
   return parseResponse(response);
+}
+
+async function parseResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+  return response.text();
+}
+
+function createError(payload, fallbackMessage) {
+  if (!payload) {
+    return new Error(fallbackMessage);
+  }
+
+  if (typeof payload === "string") {
+    return new Error(payload);
+  }
+
+  if (payload.message) return new Error(String(payload.message));
+  if (payload.error) return new Error(String(payload.error));
+  if (payload.msg) return new Error(String(payload.msg));
+
+  return new Error(JSON.stringify(payload));
 }
