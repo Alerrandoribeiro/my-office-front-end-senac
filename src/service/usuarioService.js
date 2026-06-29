@@ -1,22 +1,8 @@
 const API_URL = "http://localhost:8080/api/usuarios";
 const API_LOGIN_URL = "http://localhost:8080/api/usuarios/login";
-
-export async function cadastrarUsuario(usuario) {
-
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(usuario),
-  });
-
-  if (!response.ok) {
-    throw new Error("Usuário já cadastrado!");
-  }
-
-  return response.json();
-}
+const JSON_HEADERS = {
+  "Content-Type": "application/json",
+};
 
 async function parseResponse(response) {
   const contentType = response.headers.get("content-type") || "";
@@ -26,42 +12,41 @@ async function parseResponse(response) {
   return response.text();
 }
 
-function formatErrorMessage(errorPayload) {
-  if (errorPayload === null || errorPayload === undefined) {
-    return "Resposta de erro inválida";
+function createError(payload, fallbackMessage) {
+  if (!payload) {
+    return new Error(fallbackMessage);
   }
 
-  if (typeof errorPayload === "string") {
-    return errorPayload;
+  if (typeof payload === "string") {
+    return new Error(payload);
   }
 
-  if (typeof errorPayload === "object") {
-    if (errorPayload.message) return String(errorPayload.message);
-    if (errorPayload.msg) return String(errorPayload.msg);
-    if (errorPayload.error) return typeof errorPayload.error === "string" ? errorPayload.error : JSON.stringify(errorPayload.error);
-    if (errorPayload.erro) return String(errorPayload.erro);
-    if (errorPayload.status && errorPayload.error) return `${errorPayload.status} - ${errorPayload.error}`;
+  if (payload.message) return new Error(String(payload.message));
+  if (payload.error) return new Error(String(payload.error));
+  if (payload.msg) return new Error(String(payload.msg));
 
-    const keysToTry = ["detail", "details", "descricao", "description"];
-    for (const k of keysToTry) {
-      if (errorPayload[k]) return String(errorPayload[k]);
-    }
-    try {
-      return JSON.stringify(errorPayload);
-    } catch (e) {
-      return String(errorPayload);
-    }
+  return new Error(JSON.stringify(payload));
+}
+
+export async function cadastrarUsuario(usuario) {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: JSON_HEADERS,
+    body: JSON.stringify(usuario),
+  });
+
+  if (!response.ok) {
+    const payload = await parseResponse(response);
+    throw createError(payload, "Erro ao cadastrar usuário");
   }
 
-  return String(errorPayload);
+  return parseResponse(response);
 }
 
 export async function autenticarUsuario(credentials) {
   const response = await fetch(API_LOGIN_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: JSON_HEADERS,
     body: JSON.stringify(credentials),
   });
 
@@ -70,9 +55,8 @@ export async function autenticarUsuario(credentials) {
       throw new Error("unauthorized");
     }
 
-    const errorPayload = await parseResponse(response);
-    const errorText = formatErrorMessage(errorPayload);
-    throw new Error(errorText || `Erro ao autenticar usuário (${response.status})`);
+    const payload = await parseResponse(response);
+    throw createError(payload, `Erro ao autenticar usuário (${response.status})`);
   }
 
   return parseResponse(response);
