@@ -15,5 +15,18 @@ export const formatarComMascara = (value, mask) => {
     return maskedValue;
   };
 
+  export const formatarValor = (value) => {
+    if (!value) return '';
+  
+    let numericValue = value.replace(/\D/g, '');
+  
+    numericValue = (Number(numericValue) / 100)
+      .toFixed(2)
+      .replace('.', ',');
+  
+    return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+  
+
   export const MASCARA_TELEFONE = '(##) #####-####';
   export const MASCARA_CEP = '#####-###';

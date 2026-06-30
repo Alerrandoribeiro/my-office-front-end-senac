@@ -12,7 +12,8 @@ import { toast } from "react-toastify";
 
 import {
     MASCARA_CEP,
-    formatarComMascara
+    formatarComMascara,
+    formatarValor
 } from "../../utils/mascaras";
 import { useNavigate } from "react-router-dom";
 
@@ -34,7 +35,7 @@ const FormularioDeCadastroDeSala = () => {
     const [imagemPreview, setImagemPreview] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
-    
+
 
     const limparCampos = () => {
         setCep("");
@@ -122,7 +123,13 @@ const FormularioDeCadastroDeSala = () => {
                 bairro,
                 rua,
                 numero,
-                preco,
+                preco: Number(
+                    preco
+                        .replace("R$", "")
+                        .replace(/\./g, "")
+                        .replace(",", ".")
+                        .trim()
+                ),
                 capacidade,
                 tipo_sala: tipoSala,
                 descricao,
@@ -133,6 +140,7 @@ const FormularioDeCadastroDeSala = () => {
             };
 
             await cadastrarSala(salaPayload);
+            console.log(cadastrarSala(salaPayload));
             toast.success("Sala cadastrada com sucesso!");
             limparCampos();
             navigate("/minhas-salas");
@@ -238,7 +246,7 @@ const FormularioDeCadastroDeSala = () => {
                             label="Preço"
                             placeholder="Informe o preço"
                             valor={preco}
-                            aoAlterar={(e) => setPreco(e.target.value)}
+                            aoAlterar={(e) => setPreco(formatarValor(e.target.value))}
                             largura="100%"
                             mensagemErro={erroDeObrigatoriedade(preco)}
                         />

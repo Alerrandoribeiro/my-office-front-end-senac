@@ -1,12 +1,11 @@
 import { useState } from "react";
 import "./CardSala.css";
-import { formatarComMascara, MASCARA_CEP } from "../../utils/mascaras";
-import ModalReservaSala from "../../moleculas/ModalReservaSala/ModalReservaSala";
-
+import { formatarComMascara, formatarValor, MASCARA_CEP } from "../../utils/mascaras";
 const CardSala = ({
   tipoSala,
   tipo,
   nome,
+
   descricao,
   capacidade,
   preco,
@@ -27,7 +26,7 @@ const CardSala = ({
   ...props
 }) => {
   const [mostrarModalReserva, setMostrarModalReserva] = useState(false);
-  
+
   const salaIdFinal = salaId || idSala || id || id_sala || props.id_sala;
 
   const getImagemSrc = (value) => {
@@ -69,7 +68,7 @@ const CardSala = ({
             </div>
             <div>
               <strong>Preço</strong>
-              <span>{preco ? `R$ ${preco}` : "--"}</span>
+              <span>{preco ? `R$ ${formatarValor(String(preco))}` : "--"}</span>
             </div>
           </div>
 
