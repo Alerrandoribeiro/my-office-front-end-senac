@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 import {
     MASCARA_CEP,
+    converterValorParaNumero,
     formatarComMascara,
     formatarValor
 } from "../../utils/mascaras";
@@ -117,30 +118,25 @@ const FormularioDeCadastroDeSala = () => {
 
             const imagemBase64 = await carregarImagemComoBase64(imagemArquivo);
             const salaPayload = {
-                cep,
+                cep: cep.replace(/\D/g, ""),
                 estado,
                 cidade,
                 bairro,
                 rua,
-                numero,
-                preco: Number(
-                    preco
-                        .replace("R$", "")
-                        .replace(/\./g, "")
-                        .replace(",", ".")
-                        .trim()
-                ),
-                capacidade,
+                numero: Number(numero),
+                preco: converterValorParaNumero(preco),
+                capacidade: Number(capacidade),
+                tipo: tipoSala,
                 tipo_sala: tipoSala,
                 descricao,
                 imagem: imagemBase64,
                 latitude,
                 longitude,
-                usuarioId: usuarioLogado.id,
+                usuarioId: Number(usuarioLogado.id),
             };
 
+            console.log("Cadastro de sala payload:", salaPayload);
             await cadastrarSala(salaPayload);
-            console.log(cadastrarSala(salaPayload));
             toast.success("Sala cadastrada com sucesso!");
             limparCampos();
             navigate("/minhas-salas");
